@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+		<View
+		android:layout_width="match_parent"
+		android:layout_marginTop="10dp"
+		android:layout_height="1dp"
+		android:background="@android:color/darker_gray" />
+
+		<TextView
+		android:text="リマインダー時刻"
+		android:layout_width="match_parent"
+		android:layout_marginLeft="30dp"
+		android:layout_marginTop="10dp"
+		android:layout_height="wrap_content"
+		android:id="@+id/textView1" />
+
+		<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_marginTop="10dp"
+		android:layout_height="25dp">
+
+			<FrameLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:id="@+id/frameLayout1">
+
+				<Button
+				android:layout_width="100dp"
+				android:layout_height="match_parent"
+				android:layout_gravity="center"
+				android:background="@android:color/transparent"
+				android:id="@+id/Plan_Button_Date" />
+				<TextView
+				android:text="Date"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:gravity="center_horizontal"
+				android:id="@+id/Plan_Text_Date" />
+
+			</FrameLayout>
+
+			<FrameLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1">
+
+				<Button
+				android:layout_width="100dp"
+				android:layout_height="match_parent"
+				android:layout_gravity="center"
+				android:background="@android:color/transparent"
+				android:id="@+id/Plan_Button_Time" />
+				<TextView
+				android:text="Time"
+				android:layout_width="match_parent"
+				android:gravity="center_horizontal"
+				android:layout_height="match_parent"
+				android:id="@+id/Plan_Text_Time" />
+
+			</FrameLayout>
+
+		</LinearLayout>
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_marginTop="10dp"
+			android:layout_height="1dp"
+			android:layout_marginRight="10dp"
+			android:layout_marginLeft="10dp"
+			android:background="@android:color/darker_gray" />
+
+		<TextView
+			android:text="Plan"
+			android:layout_width="match_parent"
+			android:layout_marginLeft="30dp"
+			android:layout_marginTop="10dp"
+			android:layout_height="wrap_content"
+			android:id="@+id/Plan_Text_Plan" />
+
+		<EditText
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="30dp"
+			android:layout_marginLeft="30dp"
+			android:id="@+id/Plan_Edit_Plan" />
+
+		<TextView
+			android:text="Comment"
+			android:layout_width="match_parent"
+			android:layout_marginLeft="30dp"
+			android:layout_marginTop="20dp"
+			android:layout_height="wrap_content"
+			android:id="@+id/Plan_Text_Comment" />
+
+		<EditText
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="30dp"
+			android:layout_marginLeft="30dp"
+			android:id="@+id/Plan_Edit_Comment" />
+
+		<Button
+			android:text="Enter!"
+			android:layout_width="100dp"
+			android:layout_height="50dp"
+			android:layout_gravity="center"
+			android:id="@+id/Plan_Button_Enter" />
+
+		<View
+		android:layout_width="match_parent"
+		android:layout_marginTop="10dp"
+		android:layout_height="1dp"
+		android:background="@android:color/darker_gray" />
+
+</LinearLayout>

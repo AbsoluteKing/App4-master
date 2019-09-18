@@ -1,0 +1,14 @@
+{
+  "ProjectFilePath": "c:\\Users\\USER\\source\\repos\\App4\\App4\\App4.csproj",
+  "TargetFramework": "v8.1",
+  "TagHelpers": [],
+  "Configuration": {
+    "ConfigurationName": "UnsupportedRazor",
+    "LanguageVersion": "1.0",
+    "Extensions": [
+      {
+        "ExtensionName": "UnsupportedRazorExtension"
+      }
+    ]
+  }
+}
