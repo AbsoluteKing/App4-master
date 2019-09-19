@@ -196,8 +196,8 @@ namespace RecyclerViewer
 
             foreach (var a in table)
             {
-                DateList.Add(a.Date);
-                TimeList.Add(a.Time);
+                DateList.Add(a.Date.ToString());
+                TimeList.Add(a.Time.ToString());
                 CommentList.Add(a.Comment);
                 PlanList.Add(a.Plan);
             }

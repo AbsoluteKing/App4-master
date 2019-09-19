@@ -12,6 +12,10 @@ namespace App4
     {
         TextView timeDisplay;
         TextView Datedisplay;
+        DateTime DateTime_Date;
+        DateTime DateTime_Time;
+        int Date_year, Date_month,Date_day,Date_hour,Date_minute;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -27,7 +31,12 @@ namespace App4
 
             button_Date.Click += DateSelectOnClick;
             button_Time.Click += TimeSelectOnClick;
-            button_Enter.Click += delegate { SQlite_main.DoSomeDataAccess(Datedisplay.Text, timeDisplay.Text, editText_Plan.Text, editText_Comment.Text); };
+
+            button_Enter.Click += delegate {
+                DateTime dateTime = new DateTime(Date_year, Date_month, Date_day, Date_hour, Date_minute,0);
+                System.Console.WriteLine(dateTime);
+                //SQlite_main.DoSomeDataAccess(dateTime,  editText_Plan.Text, editText_Comment.Text);
+            };
             string a = editText_Plan.Text;
         }
 
@@ -36,6 +45,11 @@ namespace App4
             new DatePickerFragment(delegate (DateTime time)
             {
                 Datedisplay.Text = time.ToShortDateString();
+                //DateTime_Date = time;
+                System.Console.WriteLine(time.Month.ToString());
+                Date_year = time.Year;
+                Date_month = time.Month;
+                Date_day = time.Day;
             })
 
             .Show(FragmentManager, DatePickerFragment.TAG);
@@ -48,6 +62,8 @@ namespace App4
             delegate (DateTime time)
             {
                 timeDisplay.Text = time.ToShortTimeString();
+                Date_hour = time.Hour;
+                Date_minute = time.Minute;
             });
             frag.Show(FragmentManager, TimePickerFragment.TAG);
 

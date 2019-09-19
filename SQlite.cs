@@ -36,7 +36,7 @@ namespace App4
         public static SQLiteConnection db = new SQLiteConnection(dbPath);
         public static SQLiteConnection db_sorted = new SQLiteConnection(dbPath_sorted);
 
-        public static void DoSomeDataAccess(string SelectedDate, String SelectedTime, String SelectedPlan, String SelectedComment)
+        public static void DoSomeDataAccess(String SelectedDate, String SelectedTime, String SelectedPlan, String SelectedComment)
         {
             Console.WriteLine("Creating database, if it doesn't already exist");
 
