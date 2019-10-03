@@ -10,8 +10,9 @@ namespace App4
     {
         [PrimaryKey, AutoIncrement, Column("_id")]
         public int Id { get; set; }
-        public string Date { get; set; }
-        public string Time { get; set; }
+        //public string Date { get; set; }
+        //public string Time { get; set; }
+        public DateTime dateTime { get; set; }
         public string Plan { get; set; }
         public string Comment { get; set; }
     }
@@ -31,12 +32,10 @@ namespace App4
     {
         public static string dbPath = Path.Combine(
                                 Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
-        public static string dbPath_sorted = Path.Combine(
-                        Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4_sorted.db");
         public static SQLiteConnection db = new SQLiteConnection(dbPath);
-        public static SQLiteConnection db_sorted = new SQLiteConnection(dbPath_sorted);
+        //public static TableQuery<Stock> table_sorted;
 
-        public static void DoSomeDataAccess(String SelectedDate, String SelectedTime, String SelectedPlan, String SelectedComment)
+        public static void DoSomeDataAccess(DateTime SelectedDateTime, String SelectedPlan, String SelectedComment)
         {
             Console.WriteLine("Creating database, if it doesn't already exist");
 
@@ -44,8 +43,7 @@ namespace App4
 
             db.Insert(new Stock()
             {
-                Date = SelectedDate,
-                Time = SelectedTime,
+                dateTime = SelectedDateTime,
                 Plan = SelectedPlan,
                 Comment = SelectedComment
             });
@@ -65,24 +63,16 @@ namespace App4
 
         public static void SortCard()
         {
-            db_sorted.CreateTable<Stock_sorted>();
-            var table = db.Table<Stock>();
-            var table_sorted = db.Table<Stock>();
+            //db.Query<Stock>("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='Items'");
+            //int i = 0;
 
-            db.Query<Stock>("SELECT * FROM Items ORDER BY Date DESC");
-            table_sorted = db.Table<Stock>();
+
+            var table_sorted = db.Query<Stock>("SELECT * FROM Items ORDER BY dateTime ASC");
+
+
             foreach (var s in table_sorted)
             {
-                Console.WriteLine("！！！！！！！！！：" + s.Id + "　　" + s.Date);
-            }
-
-            db.Query<Stock>("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='Items'");
-            var Table_P = db.Table<Stock>();
-            //db.Query<Stock>("DELETE FROM Items");
-            //var Table_P = db.Query<Stock>("DELETE FROM SQLITE_SEQUENCE WHERE NAME='Items'");
-            foreach (var a in Table_P)
-            {
-                Console.WriteLine("ソート後：" + a.Id + "　　" + a.Date);
+                Console.WriteLine("ソート後："+s.Id+"  "+s.dateTime);
             }
         }
     }

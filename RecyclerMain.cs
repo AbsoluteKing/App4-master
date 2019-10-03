@@ -12,6 +12,7 @@ using SQLite;
 using Android.Support.V7.Widget.Helper;
 using Android.Support.V7.App;
 using static Android.Support.V7.Widget.Helper.ItemTouchHelper;
+using System.IO;
 
 namespace RecyclerViewer
 {
@@ -33,15 +34,18 @@ namespace RecyclerViewer
 
         protected override void OnCreate (Bundle bundle)
 		{
-            SQlite_main.SortCard();
+           
 
             base.OnCreate (bundle);
 
             // Instantiate the photo album:
             mPhotoAlbum = new PhotoAlbum();
+            SQlite_main.SortCard();
 
-			// Set our view from the "main" layout resource:
-			SetContentView (Resource.Layout.RecyclerMain);
+            // Set our view from the "main" layout resource:
+            SetContentView (Resource.Layout.RecyclerMain);
+
+            ListItems.Syokika();
 
             // Get our RecyclerView layout:
 			mRecyclerView = FindViewById<RecyclerView> (Resource.Id.recyclerView);
@@ -148,6 +152,26 @@ namespace RecyclerViewer
         }
     }
 
+    public class ListItems
+    {
+        public static List<int> IdList = new List<int>();
+        public static List<string> DateList = new List<string>();
+        public static List<string> TimeList = new List<string>();
+        public static List<string> CommentList = new List<string>();
+        public static List<string> PlanList = new List<string>();
+
+        public static void Syokika()
+        {
+            IdList = new List<int>();
+            TimeList = new List<string>();
+            DateList = new List<string>();
+            CommentList = new List<string>();
+            PlanList = new List<string>();
+        }
+
+    }
+
+
     //----------------------------------------------------------------------
     // ADAPTER
 
@@ -156,10 +180,6 @@ namespace RecyclerViewer
     {
         // Event handler for item clicks:
         public event EventHandler<int> ItemClick;
-        public List<string> DateList = new List<string>();
-        public List<string> TimeList = new List<string>();
-        public List<string> CommentList = new List<string>();
-        public List<string> PlanList = new List<string>();
 
         // Underlying data set (a photo album):
         public PhotoAlbum mPhotoAlbum;
@@ -185,21 +205,19 @@ namespace RecyclerViewer
             return vh;
         }
 
-        public void Getfromdb()
-        {
-
-            string dbPath = System.IO.Path.Combine(
-                            Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
-            var db = new SQLiteConnection(dbPath);
-            db.CreateTable<Stock>();
-            var table = db.Table<Stock>();
-
-            foreach (var a in table)
+        public static void Getfromdb()
+        {   
+            string dbPath = Path.Combine(
+                                Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
+            SQLiteConnection db = new SQLiteConnection(dbPath);
+            var table_sorted = db.Query<Stock>("SELECT * FROM Items ORDER BY dateTime ASC");
+            foreach (var a in table_sorted)
             {
-                DateList.Add(a.Date.ToString());
-                TimeList.Add(a.Time.ToString());
-                CommentList.Add(a.Comment);
-                PlanList.Add(a.Plan);
+                ListItems.IdList.Add(a.Id);
+                ListItems.DateList.Add(a.dateTime.Year + "/" + a.dateTime.Month + "/" + a.dateTime.Day);
+                ListItems.TimeList.Add(a.dateTime.Hour.ToString() + ":" + a.dateTime.Minute.ToString());
+                ListItems.CommentList.Add(a.Comment);
+                ListItems.PlanList.Add(a.Plan);
             }
         }
 
@@ -214,8 +232,10 @@ namespace RecyclerViewer
             //vh.Image.SetImageResource (mPhotoAlbum[position].PhotoID);
             //vh.Caption.Text = mPhotoAlbum[position].Caption;
 
-            vh.Text_Card_Date.Text = DateList[position];
-           
+            vh.Text_Card_Date.Text = ListItems.DateList[position];
+            vh.Text_Card_Time.Text = ListItems.TimeList[position];
+            vh.Text_Card_Plan.Text = ListItems.PlanList[position];
+            vh.Text_Card_Comment.Text = ListItems.CommentList[position];
         }
 
 
@@ -223,7 +243,7 @@ namespace RecyclerViewer
         // Return the number of photos available in the photo album:
         public override int ItemCount
         {
-            get { return DateList.Count; }
+            get { return ListItems.DateList.Count; }
             //get { return mPhotoAlbum.NumPhotos; }
         }
 

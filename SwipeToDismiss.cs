@@ -10,6 +10,9 @@ namespace RecyclerViewer {
 
     public class SwipeToDeleteCallback : ItemTouchHelper.SimpleCallback
     {
+                public static string dbPath = Path.Combine(
+                                Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
+        public static SQLiteConnection db = new SQLiteConnection(dbPath);
         private PhotoAlbumAdapter mAdapter;
 
 
@@ -22,9 +25,23 @@ namespace RecyclerViewer {
         public override void OnSwiped(ViewHolder viewHolder, int direction)
         {
             int position = viewHolder.AdapterPosition;
-            mAdapter.DateList.RemoveAt(position);
+            ListItems.DateList.RemoveAt(position);
+            ListItems.TimeList.RemoveAt(position);
+            ListItems.CommentList.RemoveAt(position);
+            ListItems.PlanList.RemoveAt(position);
+
+
             mAdapter.NotifyItemRemoved(position);
-            mAdapter.NotifyItemRangeChanged(position, mAdapter.DateList.Count-1);
+            int SwipedId= ListItems.IdList[position];
+
+            SQlite_main.db.Query<Stock>("DELETE FROM Items WHERE _id=?",SwipedId);
+
+            ListItems.Syokika();
+            PhotoAlbumAdapter.Getfromdb();
+
+            Console.WriteLine("あいうえお："+SwipedId+"あああああ："+position);
+
+
         }
         
         public override void OnChildDraw(Android.Graphics.Canvas c, RecyclerView recyclerView, ViewHolder viewHolder, float dX, float dY, int actionState, bool isCurrentlyActive)

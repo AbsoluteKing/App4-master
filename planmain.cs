@@ -33,10 +33,10 @@ namespace App4
             button_Time.Click += TimeSelectOnClick;
 
             button_Enter.Click += delegate {
-                DateTime dateTime = new DateTime(Date_year, Date_month, Date_day, Date_hour, Date_minute,0);
-                System.Console.WriteLine(dateTime);
-                //SQlite_main.DoSomeDataAccess(dateTime,  editText_Plan.Text, editText_Comment.Text);
+               DateTime dateTime = new DateTime(Date_year, Date_month, Date_day, Date_hour, Date_minute,0);
+                SQlite_main.DoSomeDataAccess(dateTime,  editText_Plan.Text, editText_Comment.Text);
             };
+
             string a = editText_Plan.Text;
         }
 

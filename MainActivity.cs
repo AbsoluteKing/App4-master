@@ -151,6 +151,7 @@ namespace App4
             }
             else if (id == Resource.Id.nav_slideshow)
             {
+                SQlite_main.SortCard();
                 Intent intent = new Intent(this, typeof(RecyclerViewer.RecyclerMain));
                 StartActivity(intent);
             }
@@ -158,6 +159,7 @@ namespace App4
             {
                 Intent intent = new Intent(this,typeof(App4.plan_main));
                 StartActivity(intent);
+
             }
             else if (id == Resource.Id.nav_share)
             {
