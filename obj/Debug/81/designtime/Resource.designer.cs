@@ -2600,8 +2600,8 @@ namespace App4
 			// aapt resource value: 0x7F0C0011
 			public const int action_mode_close_button = 2131492881;
 			
-			// aapt resource value: 0x7F020046
-			public const int action_settings = 2130837574;
+			// aapt resource value: 0x7F020044
+			public const int action_settings = 2130837572;
 			
 			// aapt resource value: 0x7F0C0004
 			public const int action_text = 2131492868;
@@ -2632,9 +2632,6 @@ namespace App4
 			
 			// aapt resource value: 0x7F0C001C
 			public const int cancel_action = 2131492892;
-			
-			// aapt resource value: 0x7F020009
-			public const int cardLinear = 2130837513;
 			
 			// aapt resource value: 0x7F0C001D
 			public const int center = 2131492893;
@@ -2798,23 +2795,23 @@ namespace App4
 			// aapt resource value: 0x7F0C0047
 			public const int navigation_header_container = 2131492935;
 			
-			// aapt resource value: 0x7F020040
-			public const int nav_camera = 2130837568;
+			// aapt resource value: 0x7F020038
+			public const int nav_camera = 2130837560;
+			
+			// aapt resource value: 0x7F020039
+			public const int nav_gallery = 2130837561;
 			
 			// aapt resource value: 0x7F020041
-			public const int nav_gallery = 2130837569;
+			public const int nav_manage = 2130837569;
 			
 			// aapt resource value: 0x7F020043
-			public const int nav_manage = 2130837571;
-			
-			// aapt resource value: 0x7F020045
-			public const int nav_send = 2130837573;
-			
-			// aapt resource value: 0x7F020044
-			public const int nav_share = 2130837572;
+			public const int nav_send = 2130837571;
 			
 			// aapt resource value: 0x7F020042
-			public const int nav_slideshow = 2130837570;
+			public const int nav_share = 2130837570;
+			
+			// aapt resource value: 0x7F020040
+			public const int nav_slideshow = 2130837568;
 			
 			// aapt resource value: 0x7F020003
 			public const int nav_view = 2130837507;
@@ -2882,11 +2879,11 @@ namespace App4
 			// aapt resource value: 0x7F0C0053
 			public const int radio = 2131492947;
 			
-			// aapt resource value: 0x7F020038
-			public const int randPickButton = 2130837560;
+			// aapt resource value: 0x7F020008
+			public const int randPickButton = 2130837512;
 			
-			// aapt resource value: 0x7F020039
-			public const int recyclerView = 2130837561;
+			// aapt resource value: 0x7F020009
+			public const int recyclerView = 2130837513;
 			
 			// aapt resource value: 0x7F0C0054
 			public const int right = 2131492948;
@@ -2908,9 +2905,6 @@ namespace App4
 			
 			// aapt resource value: 0x7F0C005A
 			public const int screen = 2131492954;
-			
-			// aapt resource value: 0x7F020008
-			public const int scroll = 2130837512;
 			
 			// aapt resource value: 0x7F0C005E
 			public const int scrollable = 2131492958;

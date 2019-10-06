@@ -62,7 +62,6 @@
     <Compile Include="datefragment.cs" />
     <Compile Include="PhotoAlbum.cs" />
     <Compile Include="planmain.cs" />
-    <Compile Include="RecyclerMain.cs" />
     <Compile Include="SQlite.cs" />
     <Compile Include="SwipeToDismiss.cs" />
     <Compile Include="timefragment.cs" />

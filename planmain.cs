@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
@@ -35,6 +36,8 @@ namespace App4
             button_Enter.Click += delegate {
                DateTime dateTime = new DateTime(Date_year, Date_month, Date_day, Date_hour, Date_minute,0);
                 SQlite_main.DoSomeDataAccess(dateTime,  editText_Plan.Text, editText_Comment.Text);
+                Intent intent = new Intent(this, typeof(App4.MainActivity));
+                StartActivity(intent);
             };
 
             string a = editText_Plan.Text;

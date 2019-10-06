@@ -76,8 +76,8 @@ namespace RecyclerViewer
 			mRecyclerView.SetAdapter (mAdapter);
             
             ItemTouchHelper itemTouchHelper = new
-            ItemTouchHelper(new SwipeToDeleteCallback(mAdapter));
-            itemTouchHelper.AttachToRecyclerView(mRecyclerView);
+            //ItemTouchHelper(new SwipeToDeleteCallback(mAdapter));
+            //itemTouchHelper.AttachToRecyclerView(mRecyclerView);
 
             //............................................................
             // Random Pick Button:

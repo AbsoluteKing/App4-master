@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 //using System.IO;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Graphics;
 using Android.OS;
 using Android.Provider;
 using Android.Support.Design.Widget;
@@ -13,23 +13,24 @@ using Android.Support.V4.View;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
+using Android.Support.V7.Widget.Helper;
 using Android.Text.Format;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using RecyclerViewer;
+using SQLite;
 using Environment = Android.OS.Environment;
 using File = Java.IO.File;
 using Uri = Android.Net.Uri;
 
 namespace App4
-{
-
+{ 
 
     public static class App
     {
         public static File _file;
         public static File _dir;
-        public static Bitmap bitmap;
         public static File plans;
         public static File plans_dir;
     }
@@ -38,8 +39,18 @@ namespace App4
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
-        TextView timeDisplay;
-        TextView Datedisplay;
+
+        // RecyclerView instance that displays the photo album:
+        RecyclerView mRecyclerView;
+
+        // Layout manager that lays out each card in the RecyclerView:
+        RecyclerView.LayoutManager mLayoutManager;
+
+        // Adapter that accesses the data set (a photo album):
+        PhotoAlbumAdapter mAdapter;
+
+        // Photo album that is managed by the adapter:
+        PhotoAlbum mPhotoAlbum;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -49,21 +60,49 @@ namespace App4
 
             SetContentView(Resource.Layout.activity_main);
 
-            LinearLayout cardLinear = (LinearLayout)FindViewById(Resource.Id.cardLinear);
-            cardLinear.RemoveAllViews();
+            SQlite_main.SortCard();
+            ListItems.Syokika();
+
+            // Get our RecyclerView layout:
+            mRecyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
+
+            //............................................................
+            // Layout Manager Setup:
+
+            // Use the built-in linear layout manager:
+            mLayoutManager = new LinearLayoutManager(this);
+
+            // Or use the built-in grid layout manager (two horizontal rows):
+            // mLayoutManager = new GridLayoutManager
+            //        (this, 2, GridLayoutManager.Horizontal, false);
+
+            // Plug the layout manager into the RecyclerView:
+            mRecyclerView.SetLayoutManager(mLayoutManager);
+            //............................................................
+            // Adapter Setup:
+
+            // Create an adapter for the RecyclerView, and pass it the
+            // data set (the photo album) to manage:
+            mAdapter = new PhotoAlbumAdapter(mPhotoAlbum);
 
 
+            // Plug the adapter into the RecyclerView:
+            mRecyclerView.SetAdapter(mAdapter);
+
+            ItemTouchHelper itemTouchHelper = new
+            ItemTouchHelper(new SwipeToDeleteCallback(mAdapter));
+            itemTouchHelper.AttachToRecyclerView(mRecyclerView);
 
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
-            //あとまわし
 
-           // timeDisplay = FindViewById<TextView>(Resource.Id.time_display);
-
+            //floatingactionButton実装
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
-            fab.Click += FabOnClick;
-            //FloatingActionButtonはapp_bar_mainで定義した右下に出てくるボタン　それを変数fabで宣言
-            //ボタンの取得　FindViewById<ボタンの種類>(Resource.Id.ボタン変数)
+            fab.Click += delegate {
+                Intent intent = new Intent(this, typeof(App4.plan_main));
+                StartActivity(intent);
+            };
+
 
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, Resource.String.navigation_drawer_open, Resource.String.navigation_drawer_close);
@@ -80,11 +119,9 @@ namespace App4
             navigationView.SetNavigationItemSelectedListener(this);
             //NavigationViewによって、ナビゲーションドロワーを実装できる。
 
+            
 
-            if (IsThereAnAppToTakePictures())
-            {
-                CreateDirectoryForPictures();
-            }
+
 
         }
 
@@ -152,8 +189,8 @@ namespace App4
             else if (id == Resource.Id.nav_slideshow)
             {
                 SQlite_main.SortCard();
-                Intent intent = new Intent(this, typeof(RecyclerViewer.RecyclerMain));
-                StartActivity(intent);
+                //Intent intent = new Intent(this, typeof(RecyclerViewer.RecyclerMain));
+                //StartActivity(intent);
             }
             else if (id == Resource.Id.nav_manage)
             {
@@ -239,10 +276,140 @@ namespace App4
 
             //cardLinear.AddView(linearLayout, 0);
         }
+    }
 
+    public class PhotoViewHolder : RecyclerView.ViewHolder
+    {
+        //public ImageView Image { get; private set; }
+        public TextView Caption { get; private set; }
+        public CardView Text_Card { get; private set; }
+        public TextView Text_Card_Plan { get; private set; }
+        public TextView Text_Card_Comment { get; private set; }
+        public TextView Text_Card_Date { get; private set; }
+        public TextView Text_Card_Time { get; private set; }
 
+        // Get references to the views defined in the CardView layout.
+        public PhotoViewHolder(View itemView, Action<int> listener)
+            : base(itemView)
+        {
+            // Locate and cache view references:
+            //Image = itemView.FindViewById<ImageView> (Resource.Id.imageView);
+            //Caption = itemView.FindViewById<TextView> (Resource.Id.textView);
+
+            Text_Card = itemView.FindViewById<CardView>(Resource.Id.Text_Card);
+            Text_Card_Plan = itemView.FindViewById<TextView>(Resource.Id.Text_Card_Plan);
+            Text_Card_Comment = itemView.FindViewById<TextView>(Resource.Id.Text_Card_Comment);
+            Text_Card_Date = (TextView)itemView.FindViewById(Resource.Id.Text_Card_Date);
+            Text_Card_Time = itemView.FindViewById<TextView>(Resource.Id.Text_Card_Time);
+
+            // Detect user clicks on the item view and report which item
+            // was clicked (by layout position) to the listener:
+            itemView.Click += (sender, e) => listener(base.LayoutPosition);
+        }
+    }
+
+    public class ListItems
+    {
+        public static List<int> IdList = new List<int>();
+        public static List<string> DateList = new List<string>();
+        public static List<string> TimeList = new List<string>();
+        public static List<string> CommentList = new List<string>();
+        public static List<string> PlanList = new List<string>();
+
+        public static void Syokika()
+        {
+            IdList = new List<int>();
+            TimeList = new List<string>();
+            DateList = new List<string>();
+            CommentList = new List<string>();
+            PlanList = new List<string>();
+        }
 
     }
+
+
+    //----------------------------------------------------------------------
+    // ADAPTER
+
+    // Adapter to connect the data set (photo album) to the RecyclerView: 
+    public class PhotoAlbumAdapter : RecyclerView.Adapter
+    {
+        // Event handler for item clicks:
+        public event EventHandler<int> ItemClick;
+
+        // Underlying data set (a photo album):
+        public PhotoAlbum mPhotoAlbum;
+
+        // Load the adapter with the data set (photo album) at construction time:
+        public PhotoAlbumAdapter(PhotoAlbum photoAlbum)
+        {
+            mPhotoAlbum = photoAlbum;
+            Getfromdb();
+        }
+
+        // Create a new photo CardView (invoked by the layout manager): 
+        public override RecyclerView.ViewHolder
+            OnCreateViewHolder(ViewGroup parent, int viewType)
+        {
+            // Inflate the CardView for the photo:
+            View itemView = LayoutInflater.From(parent.Context).
+                        Inflate(Resource.Layout.layout1, parent, false);
+
+            // Create a ViewHolder to find and hold these view references, and 
+            // register OnClick with the view holder:
+            PhotoViewHolder vh = new PhotoViewHolder(itemView, OnClick);
+            return vh;
+        }
+
+        public static void Getfromdb()
+        {
+            string dbPath = Path.Combine(
+                                Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
+            SQLiteConnection db = new SQLiteConnection(dbPath);
+            var table_sorted = db.Query<Stock>("SELECT * FROM Items ORDER BY dateTime ASC");
+            foreach (var a in table_sorted)
+            {
+                ListItems.IdList.Add(a.Id);
+                ListItems.DateList.Add(a.dateTime.Year + "/" + a.dateTime.Month + "/" + a.dateTime.Day);
+                ListItems.TimeList.Add(a.dateTime.Hour.ToString() + ":" + a.dateTime.Minute.ToString());
+                ListItems.CommentList.Add(a.Comment);
+                ListItems.PlanList.Add(a.Plan);
+            }
+        }
+
+        // Fill in the contents of the photo card (invoked by the layout manager):
+        public override void
+            OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
+        {
+            PhotoViewHolder vh = holder as PhotoViewHolder;
+
+            // Set the ImageView and TextView in this ViewHolder's CardView 
+            // from this position in the photo album:
+            //vh.Image.SetImageResource (mPhotoAlbum[position].PhotoID);
+            //vh.Caption.Text = mPhotoAlbum[position].Caption;
+
+            vh.Text_Card_Date.Text = ListItems.DateList[position];
+            vh.Text_Card_Time.Text = ListItems.TimeList[position];
+            vh.Text_Card_Plan.Text = ListItems.PlanList[position];
+            vh.Text_Card_Comment.Text = ListItems.CommentList[position];
+        }
+
+
+
+        // Return the number of photos available in the photo album:
+        public override int ItemCount
+        {
+            get { return ListItems.DateList.Count; }
+            //get { return mPhotoAlbum.NumPhotos; }
+        }
+
+        // Raise an event when the item-click takes place:
+        void OnClick(int position)
+        {
+            ItemClick?.Invoke(this, position);
+        }
+    }
 }
+
      
 

@@ -6,14 +6,14 @@ using App4;
 using SQLite;
 using System.IO;
 
-namespace RecyclerViewer {
+namespace App4 {
 
     public class SwipeToDeleteCallback : ItemTouchHelper.SimpleCallback
     {
                 public static string dbPath = Path.Combine(
                                 Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
         public static SQLiteConnection db = new SQLiteConnection(dbPath);
-        private PhotoAlbumAdapter mAdapter;
+        private App4.PhotoAlbumAdapter mAdapter;
 
 
 
