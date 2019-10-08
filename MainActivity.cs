@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Android;
 //using System.IO;
 using Android.App;
 using Android.Content;
@@ -8,6 +9,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Provider;
 using Android.Support.Design.Widget;
+using Android.Support.V4.App;
 using Android.Support.V4.Content;
 using Android.Support.V4.View;
 using Android.Support.V4.Widget;
@@ -20,6 +22,7 @@ using Android.Views;
 using Android.Widget;
 using RecyclerViewer;
 using SQLite;
+using ActionBarDrawerToggle = Android.Support.V7.App.ActionBarDrawerToggle;
 using Environment = Android.OS.Environment;
 using File = Java.IO.File;
 using Uri = Android.Net.Uri;
@@ -55,10 +58,15 @@ namespace App4
         protected override void OnCreate(Bundle savedInstanceState)
         {
             //OnCreate→Activityの初期化
-
+            ActivityCompat.RequestPermissions(this, new[]
+{
+                Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera
+            }, 0);
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.activity_main);
+
+
 
             SQlite_main.SortCard();
             ListItems.Syokika();
@@ -118,11 +126,6 @@ namespace App4
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             navigationView.SetNavigationItemSelectedListener(this);
             //NavigationViewによって、ナビゲーションドロワーを実装できる。
-
-            
-
-
-
         }
 
         public override void OnBackPressed()
