@@ -11,6 +11,7 @@
       <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/paths" />
     </provider>
     <activity android:label="TreePager" android:name="md568520490024b97edd8b5d3c7948179ad.TreeMain" />
+    <receiver android:name="md591ac425b7bebc7a65cec0ef28027c2db.AlarmReceiver" />
     <activity android:label="ENTER YOUR PLANS" android:name="md591ac425b7bebc7a65cec0ef28027c2db.plan_main" />
     <activity android:label="@string/app_name" android:theme="@style/AppTheme.NoActionBar" android:name="md591ac425b7bebc7a65cec0ef28027c2db.MainActivity">
       <intent-filter>

@@ -8,6 +8,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Provider;
+using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.App;
 using Android.Support.V4.Content;
@@ -54,19 +55,22 @@ namespace App4
 
         // Photo album that is managed by the adapter:
         PhotoAlbum mPhotoAlbum;
+        static readonly int NOTIFICATION_ID = 1000;
+        public static readonly string CHANNEL_ID = "location_notification";
+        internal static readonly string COUNT_KEY = "count";
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             //OnCreate→Activityの初期化
             ActivityCompat.RequestPermissions(this, new[]
-{
+            {
                 Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera
             }, 0);
+
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.activity_main);
-
-
 
             SQlite_main.SortCard();
             ListItems.Syokika();
@@ -107,8 +111,31 @@ namespace App4
             //floatingactionButton実装
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += delegate {
-                Intent intent = new Intent(this, typeof(App4.plan_main));
-                StartActivity(intent);
+                //Intent intent = new Intent(this, typeof(App4.plan_main));
+                //StartActivity(intent);
+                var alarmIntent = new Intent(this, typeof(AlarmReceiver));
+                alarmIntent.PutExtra("title", "Hello");
+                alarmIntent.PutExtra("message", "World!");
+
+                var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
+
+                var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
+                alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 5 * 1000, pending);
+                Console.WriteLine("あいえう");
+            };
+
+            var button = FindViewById<Button>(Resource.Id.randPickButton);
+
+            button.Click += delegate
+            {
+                var alarmIntent = new Intent(this, typeof(AlarmReceiver));
+                alarmIntent.PutExtra("title", "HAYOSEIIII");
+                alarmIntent.PutExtra("message", "World!");
+
+                var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
+
+                var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
+                alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 5 * 1000, pending);
             };
 
 
@@ -116,16 +143,31 @@ namespace App4
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, Resource.String.navigation_drawer_open, Resource.String.navigation_drawer_close);
             drawer.AddDrawerListener(toggle);
             toggle.SyncState();
-            //レイアウトの状態を取得
-            //変数toggleをActionBarDrawerToggleのインスタンスとして生成
-            //ここでいうthisはインスタンスのメンバ変数の宣言に使う予約語とは別
-            //ActionBarDrawerToggle(HostActivity,DrawerLayoutObject,ToolbarLayoutObject,「ドロワーを開く」操作を示す文字列リソース,「ドロワーを閉じる」操作を示す文字列リソース)
-            //メニューアイコンを生成（≡のやつ）
-            //toggle.SyncState()によって、画面を横向きにしたとき回転しながらアイコンが遷移するようになる
 
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             navigationView.SetNavigationItemSelectedListener(this);
             //NavigationViewによって、ナビゲーションドロワーを実装できる。
+        }
+
+        void CreateNotificationChannel()
+        {
+            if (Build.VERSION.SdkInt < BuildVersionCodes.O)
+            {
+                // Notification channels are new in API 26 (and not a part of the
+                // support library). There is no need to create a notification
+                // channel on older versions of Android.
+                return;
+            }
+
+            var name = Resources.GetString(Resource.String.channel_name);
+            var description = GetString(Resource.String.channel_description);
+            var channel = new NotificationChannel(CHANNEL_ID, name, NotificationImportance.Default)
+            {
+                Description = description
+            };
+
+            var notificationManager = (NotificationManager)GetSystemService(NotificationService);
+            notificationManager.CreateNotificationChannel(channel);
         }
 
         public override void OnBackPressed()
@@ -203,6 +245,15 @@ namespace App4
             }
             else if (id == Resource.Id.nav_share)
             {
+                var alarmIntent = new Intent(this, typeof(AlarmReceiver));
+                alarmIntent.PutExtra("title", "Hello");
+                alarmIntent.PutExtra("message", "World!");
+
+                var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
+
+                var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
+                alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 5 * 1000, pending);
+                Console.WriteLine("あいえう");
             }
             else if (id == Resource.Id.nav_send)
             {

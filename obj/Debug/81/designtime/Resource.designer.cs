@@ -3526,6 +3526,12 @@ namespace App4
 			// aapt resource value: 0x7F15001F
 			public const int bottom_sheet_behavior = 2132082719;
 			
+			// aapt resource value: 0x7F080007
+			public const int channel_description = 2131230727;
+			
+			// aapt resource value: 0x7F080006
+			public const int channel_name = 2131230726;
+			
 			// aapt resource value: 0x7F150020
 			public const int character_counter_pattern = 2132082720;
 			
@@ -3555,12 +3561,6 @@ namespace App4
 			
 			// aapt resource value: 0x7F150001
 			public const int status_bar_notification_info_overflow = 2132082689;
-			
-			// aapt resource value: 0x7F080006
-			public const int test1 = 2131230726;
-			
-			// aapt resource value: 0x7F080007
-			public const int test2 = 2131230727;
 			
 			static String()
 			{

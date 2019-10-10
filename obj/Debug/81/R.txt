@@ -1147,6 +1147,8 @@ int string action_settings 0x7f0c002a
 int string app_name 0x7f0c0027
 int string appbar_scrolling_view_behavior 0x7f0c001e
 int string bottom_sheet_behavior 0x7f0c001f
+int string channel_description 0x7f0c002c
+int string channel_name 0x7f0c002b
 int string character_counter_pattern 0x7f0c0020
 int string navigation_drawer_close 0x7f0c0029
 int string navigation_drawer_open 0x7f0c0028
@@ -1157,8 +1159,6 @@ int string path_password_eye_mask_visible 0x7f0c0024
 int string path_password_strike_through 0x7f0c0025
 int string search_menu_title 0x7f0c0011
 int string status_bar_notification_info_overflow 0x7f0c0026
-int string test1 0x7f0c002b
-int string test2 0x7f0c002c
 int style AlertDialog_AppCompat 0x7f0a0099
 int style AlertDialog_AppCompat_Light 0x7f0a009a
 int style Animation_AppCompat_Dialog 0x7f0a009b

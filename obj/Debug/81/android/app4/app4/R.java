@@ -3467,6 +3467,8 @@ containing a value of this type.
         public static final int app_name=0x7f0c0027;
         public static final int appbar_scrolling_view_behavior=0x7f0c001e;
         public static final int bottom_sheet_behavior=0x7f0c001f;
+        public static final int channel_description=0x7f0c002c;
+        public static final int channel_name=0x7f0c002b;
         public static final int character_counter_pattern=0x7f0c0020;
         public static final int navigation_drawer_close=0x7f0c0029;
         public static final int navigation_drawer_open=0x7f0c0028;
@@ -3477,8 +3479,6 @@ containing a value of this type.
         public static final int path_password_strike_through=0x7f0c0025;
         public static final int search_menu_title=0x7f0c0011;
         public static final int status_bar_notification_info_overflow=0x7f0c0026;
-        public static final int test1=0x7f0c002b;
-        public static final int test2=0x7f0c002c;
     }
     public static final class style {
         public static final int AlertDialog_AppCompat=0x7f0a0099;

@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="datefragment.cs" />
+    <Compile Include="Notification.cs" />
     <Compile Include="PhotoAlbum.cs" />
     <Compile Include="planmain.cs" />
     <Compile Include="SQlite.cs" />
