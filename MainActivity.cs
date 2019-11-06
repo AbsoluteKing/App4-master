@@ -113,15 +113,26 @@ namespace App4
             fab.Click += delegate {
                 //Intent intent = new Intent(this, typeof(App4.plan_main));
                 //StartActivity(intent);
-                var alarmIntent = new Intent(this, typeof(AlarmReceiver));
-                alarmIntent.PutExtra("title", "Hello");
-                alarmIntent.PutExtra("message", "World!");
+                //var alarmIntent = new Intent(this, typeof(AlarmReceiver));
+                //alarmIntent.PutExtra("title", "Hello");
+                //alarmIntent.PutExtra("message", "World!");
 
-                var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
+                //var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
 
-                var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
-                alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 5 * 1000, pending);
-                Console.WriteLine("あいえう");
+                //var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
+                //alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 5 * 1000, pending);
+                //Console.WriteLine("あいえう");
+                CreateNotificationChannel();
+                var builder = new NotificationCompat.Builder(this, MainActivity.CHANNEL_ID)
+                                .SetSmallIcon(Resource.Drawable.Icon)
+                                .SetContentTitle("aiueo")
+                                .SetContentText("kakikukeko");
+
+                var notification = builder.Build();
+                NotificationManager notificationManager =
+    GetSystemService(Context.NotificationService) as NotificationManager;
+                notificationManager.Notify(0, notification);
+                
             };
 
             var button = FindViewById<Button>(Resource.Id.randPickButton);
@@ -169,6 +180,8 @@ namespace App4
             var notificationManager = (NotificationManager)GetSystemService(NotificationService);
             notificationManager.CreateNotificationChannel(channel);
         }
+
+       
 
         public override void OnBackPressed()
         {
