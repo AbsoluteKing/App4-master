@@ -6,6 +6,7 @@ using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Icu.Util;
 using Android.OS;
 using Android.Provider;
 using Android.Runtime;
@@ -39,10 +40,14 @@ namespace App4
         public static File plans_dir;
     }
 
+
+
     //（派生クラス名）：基底クラス名
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
+        static readonly int NOTIFICATION_ID = 1000;
+        public static readonly string CHANNEL_ID = "location_notification";
 
         // RecyclerView instance that displays the photo album:
         RecyclerView mRecyclerView;
@@ -55,8 +60,7 @@ namespace App4
 
         // Photo album that is managed by the adapter:
         PhotoAlbum mPhotoAlbum;
-        static readonly int NOTIFICATION_ID = 1000;
-        public static readonly string CHANNEL_ID = "location_notification";
+        
         internal static readonly string COUNT_KEY = "count";
 
 
@@ -111,28 +115,33 @@ namespace App4
             //floatingactionButton実装
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += delegate {
+                Android.Icu.Util.TimeZone tzn1 = Android.Icu.Util.TimeZone.Default;
+                Calendar myAlarmDate = Calendar.GetInstance(tzn1);
+                CreateNotificationChannel();
+                System.Console.WriteLine(tzn1.ID);
                 //Intent intent = new Intent(this, typeof(App4.plan_main));
                 //StartActivity(intent);
-                //var alarmIntent = new Intent(this, typeof(AlarmReceiver));
-                //alarmIntent.PutExtra("title", "Hello");
-                //alarmIntent.PutExtra("message", "World!");
+                var alarmIntent = new Intent(this, typeof(AlarmReceiver));
+                alarmIntent.PutExtra("title", "Hello");
+                alarmIntent.PutExtra("message", "World!");
 
-                //var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
+                var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
 
-                //var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
-                //alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 5 * 1000, pending);
-                //Console.WriteLine("あいえう");
-                CreateNotificationChannel();
-                var builder = new NotificationCompat.Builder(this, MainActivity.CHANNEL_ID)
-                                .SetSmallIcon(Resource.Drawable.Icon)
-                                .SetContentTitle("aiueo")
-                                .SetContentText("kakikukeko");
+                var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
+                alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 10 * 1000, pending);
+                Console.WriteLine("あいえう");
 
-                var notification = builder.Build();
-                NotificationManager notificationManager =
-    GetSystemService(Context.NotificationService) as NotificationManager;
-                notificationManager.Notify(0, notification);
-                
+                //CreateNotificationChannel();
+                //var builder = new NotificationCompat.Builder(this, MainActivity.CHANNEL_ID)
+                //                .SetSmallIcon(Resource.Drawable.Icon)
+                //                .SetContentTitle("aiueo")
+                //                .SetContentText("kakikukeko");
+
+                //var notification = builder.Build();
+                //NotificationManager notificationManager =
+                //GetSystemService(Context.NotificationService) as NotificationManager;
+                //notificationManager.Notify(0, notification);
+
             };
 
             var button = FindViewById<Button>(Resource.Id.randPickButton);
@@ -160,6 +169,7 @@ namespace App4
             //NavigationViewによって、ナビゲーションドロワーを実装できる。
         }
 
+
         void CreateNotificationChannel()
         {
             if (Build.VERSION.SdkInt < BuildVersionCodes.O)
@@ -181,7 +191,6 @@ namespace App4
             notificationManager.CreateNotificationChannel(channel);
         }
 
-       
 
         public override void OnBackPressed()
         {
