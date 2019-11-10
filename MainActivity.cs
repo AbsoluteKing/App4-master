@@ -6,7 +6,6 @@ using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Icu.Util;
 using Android.OS;
 using Android.Provider;
 using Android.Runtime;
@@ -22,6 +21,7 @@ using Android.Text.Format;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Java.Util;
 using RecyclerViewer;
 using SQLite;
 using ActionBarDrawerToggle = Android.Support.V7.App.ActionBarDrawerToggle;
@@ -46,8 +46,7 @@ namespace App4
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
-        static readonly int NOTIFICATION_ID = 1000;
-        public static readonly string CHANNEL_ID = "location_notification";
+
 
         // RecyclerView instance that displays the photo album:
         RecyclerView mRecyclerView;
@@ -115,21 +114,18 @@ namespace App4
             //floatingactionButton実装
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += delegate {
-                Android.Icu.Util.TimeZone tzn1 = Android.Icu.Util.TimeZone.Default;
-                Calendar myAlarmDate = Calendar.GetInstance(tzn1);
-                CreateNotificationChannel();
-                System.Console.WriteLine(tzn1.ID);
-                //Intent intent = new Intent(this, typeof(App4.plan_main));
-                //StartActivity(intent);
-                var alarmIntent = new Intent(this, typeof(AlarmReceiver));
-                alarmIntent.PutExtra("title", "Hello");
-                alarmIntent.PutExtra("message", "World!");
+                //CreateNotificationChannel();
+                Intent intent = new Intent(this, typeof(App4.plan_main));
+                StartActivity(intent);
+                //var alarmIntent = new Intent(this, typeof(AlarmReceiver));
+                //alarmIntent.PutExtra("title", "Hello");
+                //alarmIntent.PutExtra("message", "World!");
 
-                var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
+                //var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
 
-                var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
-                alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 10 * 1000, pending);
-                Console.WriteLine("あいえう");
+                //var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
+                //alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + GetDateTimeinMillis(dt1), pending);
+                //Console.WriteLine("あいえう");
 
                 //CreateNotificationChannel();
                 //var builder = new NotificationCompat.Builder(this, MainActivity.CHANNEL_ID)
@@ -167,28 +163,6 @@ namespace App4
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             navigationView.SetNavigationItemSelectedListener(this);
             //NavigationViewによって、ナビゲーションドロワーを実装できる。
-        }
-
-
-        void CreateNotificationChannel()
-        {
-            if (Build.VERSION.SdkInt < BuildVersionCodes.O)
-            {
-                // Notification channels are new in API 26 (and not a part of the
-                // support library). There is no need to create a notification
-                // channel on older versions of Android.
-                return;
-            }
-
-            var name = Resources.GetString(Resource.String.channel_name);
-            var description = GetString(Resource.String.channel_description);
-            var channel = new NotificationChannel(CHANNEL_ID, name, NotificationImportance.Default)
-            {
-                Description = description
-            };
-
-            var notificationManager = (NotificationManager)GetSystemService(NotificationService);
-            notificationManager.CreateNotificationChannel(channel);
         }
 
 
@@ -287,9 +261,9 @@ namespace App4
             return true;
         }
 
-
         private void TakeAPicture(IMenuItem item)
         {
+            CreateDirectoryForPictures();
             Intent intent = new Intent(MediaStore.ActionImageCapture);
 
             App._file = new File(App._dir, String.Format("myPhoto_{0}.jpg", Guid.NewGuid()));

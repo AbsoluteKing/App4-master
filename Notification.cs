@@ -17,10 +17,6 @@ namespace App4
 
         public override void OnReceive(Context context, Intent intent)
         {
-      
-
-
-
             var message = intent.GetStringExtra("message");
             var title = intent.GetStringExtra("title");
 
@@ -31,25 +27,20 @@ namespace App4
             var style = new NotificationCompat.BigTextStyle();
             style.BigText(message);
 
-            int resourceId = Resource.Drawable.Icon;
-
             Android.Net.Uri uri = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
             
-            var builder = new NotificationCompat.Builder(context, MainActivity.CHANNEL_ID)
+            var builder = new NotificationCompat.Builder(context, plan_main.CHANNEL_ID)
                             .SetContentIntent(contentIntent)
                             .SetSmallIcon(Resource.Drawable.Icon)
-                            .SetContentTitle("aiueo")
-                            .SetContentText("kakikukeko")
+                            .SetContentTitle(title)
+                            .SetContentText(message)
                             .SetStyle(style)
                             .SetWhen(Java.Lang.JavaSystem.CurrentTimeMillis())
                             .SetSound(uri)
                             .SetColor(ActivityCompat.GetColor(context, Resource.Color.colorPrimaryDark));
 
             var notification = builder.Build();
-
             manager.Notify(0, notification);
-            Console.WriteLine("かきくえこ");
-
         }
 
     }
