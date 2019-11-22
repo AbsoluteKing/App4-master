@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Android;
 //using System.IO;
 using Android.App;
@@ -40,11 +41,21 @@ namespace App4
         public static File plans_dir;
     }
 
-
+    [Table("Items")]
+    public class Stock
+    {
+        [PrimaryKey, AutoIncrement, Column("_id")]
+        public int Id { get; set; }
+        //public string Date { get; set; }
+        //public string Time { get; set; }
+        public DateTime dateTime { get; set; }
+        public string Plan { get; set; }
+        public string Comment { get; set; }
+    }
 
     //（派生クラス名）：基底クラス名
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
-    public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
+    public class  MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
 
 
@@ -61,21 +72,24 @@ namespace App4
         PhotoAlbum mPhotoAlbum;
         
         internal static readonly string COUNT_KEY = "count";
+        const string permission = Manifest.Permission.WriteExternalStorage;
 
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            //OnCreate→Activityの初期化
-            ActivityCompat.RequestPermissions(this, new[]
+            const string permission = Manifest.Permission.WriteExternalStorage;
+            if (CheckSelfPermission(permission) == Permission.Denied)
             {
-                Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera
-            }, 0);
+                ActivityCompat.RequestPermissions(this, new[]{Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera}, 0);
+            }
 
+
+            //OnCreate→Activityの初期化
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.activity_main);
 
-            SQlite_main.SortCard();
+
             ListItems.Syokika();
 
             // Get our RecyclerView layout:
@@ -166,6 +180,7 @@ namespace App4
         }
 
 
+
         public override void OnBackPressed()
         {
             //androidの戻るボタンが押された時の操作を記述
@@ -225,11 +240,11 @@ namespace App4
             }
             else if (id == Resource.Id.nav_gallery)
             {
-                TimeSelectOnClick(item);
+                Intent intent = new Intent(this, typeof(TreePager.TreeMain));
+                StartActivity(intent);
             }
             else if (id == Resource.Id.nav_slideshow)
             {
-                SQlite_main.SortCard();
                 //Intent intent = new Intent(this, typeof(RecyclerViewer.RecyclerMain));
                 //StartActivity(intent);
             }
@@ -326,6 +341,8 @@ namespace App4
 
             //cardLinear.AddView(linearLayout, 0);
         }
+
+
     }
 
     public class PhotoViewHolder : RecyclerView.ViewHolder
@@ -394,7 +411,7 @@ namespace App4
         public PhotoAlbumAdapter(PhotoAlbum photoAlbum)
         {
             mPhotoAlbum = photoAlbum;
-            Getfromdb();
+            //Getfromdb();
         }
 
         // Create a new photo CardView (invoked by the layout manager): 
@@ -411,21 +428,22 @@ namespace App4
             return vh;
         }
 
-        public static void Getfromdb()
-        {
-            string dbPath = Path.Combine(
-                                Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
-            SQLiteConnection db = new SQLiteConnection(dbPath);
-            var table_sorted = db.Query<Stock>("SELECT * FROM Items ORDER BY dateTime ASC");
-            foreach (var a in table_sorted)
-            {
-                ListItems.IdList.Add(a.Id);
-                ListItems.DateList.Add(a.dateTime.Year + "/" + a.dateTime.Month + "/" + a.dateTime.Day);
-                ListItems.TimeList.Add(a.dateTime.Hour.ToString() + ":" + a.dateTime.Minute.ToString());
-                ListItems.CommentList.Add(a.Comment);
-                ListItems.PlanList.Add(a.Plan);
-            }
-        }
+        //public void Getfromdb()
+        //{
+
+        //    string dbPath = Path.Combine(
+        //                        Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
+        //    SQLiteConnection db = new SQLiteConnection(dbPath);
+        //    var table_sorted = db.Query<Stock>("SELECT * FROM Items ORDER BY dateTime ASC");
+        //    foreach (var a in table_sorted)
+        //    {
+        //        ListItems.IdList.Add(a.Id);
+        //        ListItems.DateList.Add(a.dateTime.Year + "/" + a.dateTime.Month + "/" + a.dateTime.Day);
+        //        ListItems.TimeList.Add(a.dateTime.Hour.ToString() + ":" + a.dateTime.Minute.ToString());
+        //        ListItems.CommentList.Add(a.Comment);
+        //        ListItems.PlanList.Add(a.Plan);
+        //    }
+        //}
 
         // Fill in the contents of the photo card (invoked by the layout manager):
         public override void

@@ -227,4 +227,3 @@ C:\App4-master\obj\Debug\81\android\assets\System.pdb
 C:\App4-master\obj\Debug\81\android\assets\System.Runtime.Serialization.pdb
 C:\App4-master\obj\Debug\81\android\assets\System.ServiceModel.Internals.pdb
 C:\App4-master\obj\Debug\81\android\assets\System.Xml.pdb
-C:\App4-master\obj\Debug\81\App4.csprojAssemblyReference.cache

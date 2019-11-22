@@ -12,12 +12,9 @@ using Android.Support.V7.Widget;
 
 namespace TreePager
 {
-
-
     [Activity(Label = "TreePager")]
     public class TreeMain: Activity
     {
-
         // Tree catalog that is managed by the adapter:
         TreeCatalog treeCatalog;
         protected override void OnCreate(Bundle bundle)
@@ -37,9 +34,6 @@ namespace TreePager
 
             // Set up the adapter for the ViewPager
             viewPager.Adapter = new TreePagerAdapter(this, treeCatalog);
-
-            
-
         }
 
     }

@@ -1,11 +1,16 @@
-﻿using Android.App;
+﻿using Android;
+using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V4.App;
 using Android.Views;
 using Android.Widget;
 using Java.IO;
+using SQLite;
 using System;
+using System.IO;
 
 namespace App4
 {
@@ -52,14 +57,65 @@ namespace App4
                 {
                     System.Console.WriteLine("あいうえお："+dateTime);
                     System.Console.WriteLine("かきくえこ"+dateDefault);
-                    SQlite_main.DoSomeDataAccess(dateTime, editText_Plan.Text, editText_Comment.Text);
+                    DoSomeDataAccess(dateTime, editText_Plan.Text, editText_Comment.Text);
                     CreateNotification(dateTime, editText_Plan.Text, editText_Comment.Text);
                     Intent intent = new Intent(this, typeof(App4.MainActivity));
+                    SortCard();
                     StartActivity(intent);
                 }
             };
+        }
 
-            string a = editText_Plan.Text;
+        public void DoSomeDataAccess(DateTime SelectedDateTime, String SelectedPlan, String SelectedComment)
+        {
+            System.Console.WriteLine("Creating database, if it doesn't already exist");
+
+
+
+        const string permission = Manifest.Permission.WriteExternalStorage;
+            if (CheckSelfPermission(permission) == Permission.Denied)
+            {
+                ActivityCompat.RequestPermissions(this, new[]{Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera}, 0);
+            }
+            string dbPath = Path.Combine(
+                            Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
+            SQLiteConnection db = new SQLiteConnection(dbPath);
+            db.CreateTable<Stock>();
+
+            db.Insert(new Stock()
+            {
+                dateTime = SelectedDateTime,
+                Plan = SelectedPlan,
+                Comment = SelectedComment
+            });
+
+            var table = db.Table<Stock>();
+            foreach (var s in table)
+            {
+                System.Console.WriteLine(s.Id + " " + s.Plan);
+            }
+        }
+
+        public void SortCard()
+        {
+            const string permission = Manifest.Permission.WriteExternalStorage;
+            if (CheckSelfPermission(permission) == Permission.Denied)
+            {
+                ActivityCompat.RequestPermissions(this, new[]
+    {
+                Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera
+            }, 0);
+            }
+            string dbPath = Path.Combine(
+                            Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
+            SQLiteConnection db = new SQLiteConnection(dbPath);
+            var table_sorted = db.Query<Stock>("SELECT * FROM Items ORDER BY dateTime ASC");
+
+
+            foreach (var s in table_sorted)
+            {
+                System.Console.WriteLine("ソート後：" + s.Id + "  " + s.dateTime);
+            }
         }
 
         private void DateSelectOnClick(object sender, EventArgs eventArgs)
@@ -68,7 +124,6 @@ namespace App4
             {
                 Datedisplay.Text = time.ToShortDateString();
                 //DateTime_Date = time;
-                System.Console.WriteLine(time.Month.ToString());
                 Date_year = time.Year;
                 Date_month = time.Month;
                 Date_day = time.Day;
@@ -76,6 +131,7 @@ namespace App4
 
             .Show(FragmentManager, DatePickerFragment.TAG);
         }
+
 
 
         void TimeSelectOnClick(object sender, EventArgs eventArgs)
@@ -90,6 +146,7 @@ namespace App4
             frag.Show(FragmentManager, TimePickerFragment.TAG);
 
         }
+
 
         void CreateNotification(DateTime dateTime,String EditText_Plan, String EditText_Comment)
         {

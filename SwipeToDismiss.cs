@@ -10,9 +10,7 @@ namespace App4 {
 
     public class SwipeToDeleteCallback : ItemTouchHelper.SimpleCallback
     {
-                public static string dbPath = Path.Combine(
-                                Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
-        public static SQLiteConnection db = new SQLiteConnection(dbPath);
+
         private App4.PhotoAlbumAdapter mAdapter;
 
 
@@ -30,20 +28,40 @@ namespace App4 {
             ListItems.CommentList.RemoveAt(position);
             ListItems.PlanList.RemoveAt(position);
 
+                            string dbPath = Path.Combine(
+                                Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
+        SQLiteConnection db = new SQLiteConnection(dbPath);
 
-            mAdapter.NotifyItemRemoved(position);
+        mAdapter.NotifyItemRemoved(position);
             int SwipedId= ListItems.IdList[position];
 
-            SQlite_main.db.Query<Stock>("DELETE FROM Items WHERE _id=?",SwipedId);
+            db.Query<Stock>("DELETE FROM Items WHERE _id=?",SwipedId);
 
             ListItems.Syokika();
-            PhotoAlbumAdapter.Getfromdb();
+            Getfromdb();
 
             Console.WriteLine("あいうえお："+SwipedId+"あああああ："+position);
 
 
         }
-        
+
+        public void Getfromdb()
+        {
+
+            string dbPath = Path.Combine(
+                                Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
+            SQLiteConnection db = new SQLiteConnection(dbPath);
+            var table_sorted = db.Query<Stock>("SELECT * FROM Items ORDER BY dateTime ASC");
+            foreach (var a in table_sorted)
+            {
+                ListItems.IdList.Add(a.Id);
+                ListItems.DateList.Add(a.dateTime.Year + "/" + a.dateTime.Month + "/" + a.dateTime.Day);
+                ListItems.TimeList.Add(a.dateTime.Hour.ToString() + ":" + a.dateTime.Minute.ToString());
+                ListItems.CommentList.Add(a.Comment);
+                ListItems.PlanList.Add(a.Plan);
+            }
+        }
+
         public override void OnChildDraw(Android.Graphics.Canvas c, RecyclerView recyclerView, ViewHolder viewHolder, float dX, float dY, int actionState, bool isCurrentlyActive)
         {
             base.OnChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
