@@ -3158,7 +3158,7 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f090079;
         public static final int action_mode_bar_stub=0x7f090078;
         public static final int action_mode_close_button=0x7f09005c;
-        public static final int action_settings=0x7f0900d8;
+        public static final int action_settings=0x7f0900d0;
         public static final int action_text=0x7f0900ab;
         public static final int actions=0x7f0900b9;
         public static final int activity_chooser_view_content=0x7f09005d;
@@ -3195,8 +3195,6 @@ containing a value of this type.
         public static final int design_navigation_view=0x7f09009c;
         public static final int disableHome=0x7f090020;
         public static final int drawer_layout=0x7f09008b;
-        public static final int editText1=0x7f0900cc;
-        public static final int editText2=0x7f0900ce;
         public static final int edit_query=0x7f09007e;
         public static final int end=0x7f090030;
         public static final int end_padder=0x7f0900bb;
@@ -3205,8 +3203,6 @@ containing a value of this type.
         public static final int exitUntilCollapsed=0x7f090041;
         public static final int expand_activities_button=0x7f09005e;
         public static final int expanded_menu=0x7f090072;
-        public static final int extView1=0x7f0900c8;
-        public static final int extView2=0x7f0900ca;
         public static final int fab=0x7f09008e;
         public static final int fill=0x7f090050;
         public static final int fill_horizontal=0x7f090051;
@@ -3214,7 +3210,6 @@ containing a value of this type.
         public static final int fixed=0x7f090054;
         public static final int forever=0x7f090058;
         public static final int frameLayout1=0x7f0900bd;
-        public static final int frameLayout2=0x7f0900cb;
         public static final int ghost_view=0x7f09000a;
         public static final int home=0x7f090005;
         public static final int homeAsUp=0x7f090021;
@@ -3233,19 +3228,19 @@ containing a value of this type.
         public static final int line3=0x7f090018;
         public static final int listMode=0x7f09001d;
         public static final int list_item=0x7f090061;
-        public static final int masked=0x7f0900d1;
+        public static final int masked=0x7f0900c9;
         public static final int media_actions=0x7f0900af;
-        public static final int message=0x7f0900cf;
+        public static final int message=0x7f0900c7;
         public static final int middle=0x7f090031;
         public static final int mini=0x7f090053;
         public static final int multiply=0x7f090028;
         public static final int myButton=0x7f09008f;
-        public static final int nav_camera=0x7f0900d2;
-        public static final int nav_gallery=0x7f0900d3;
-        public static final int nav_manage=0x7f0900d5;
-        public static final int nav_send=0x7f0900d7;
-        public static final int nav_share=0x7f0900d6;
-        public static final int nav_slideshow=0x7f0900d4;
+        public static final int nav_camera=0x7f0900ca;
+        public static final int nav_gallery=0x7f0900cb;
+        public static final int nav_manage=0x7f0900cd;
+        public static final int nav_send=0x7f0900cf;
+        public static final int nav_share=0x7f0900ce;
+        public static final int nav_slideshow=0x7f0900cc;
         public static final int nav_view=0x7f09008c;
         public static final int navigation_header_container=0x7f09009b;
         public static final int never=0x7f09003b;
@@ -3316,7 +3311,6 @@ containing a value of this type.
         public static final int textinput_error=0x7f090015;
         public static final int time=0x7f0900b4;
         public static final int title=0x7f09001c;
-        public static final int title2=0x7f0900cd;
         public static final int titleDividerNoCustom=0x7f090071;
         public static final int title_template=0x7f09006f;
         public static final int toolbar=0x7f09008d;
@@ -3331,11 +3325,9 @@ containing a value of this type.
         public static final int uniform=0x7f09002d;
         public static final int up=0x7f090009;
         public static final int useLogo=0x7f090026;
-        public static final int utton1=0x7f0900c7;
-        public static final int utton2=0x7f0900c9;
         public static final int view_offset_helper=0x7f090016;
         public static final int viewpager=0x7f0900a6;
-        public static final int visible=0x7f0900d0;
+        public static final int visible=0x7f0900c8;
         public static final int withText=0x7f09003c;
         public static final int wrap_content=0x7f09002e;
     }
@@ -3416,13 +3408,12 @@ containing a value of this type.
         public static final int notification_template_part_time=0x7f04003d;
         public static final int photocardview=0x7f04003e;
         public static final int plan_main=0x7f04003f;
-        public static final int plan_main_old=0x7f040040;
-        public static final int recyclermain=0x7f040041;
-        public static final int select_dialog_item_material=0x7f040042;
-        public static final int select_dialog_multichoice_material=0x7f040043;
-        public static final int select_dialog_singlechoice_material=0x7f040044;
-        public static final int support_simple_spinner_dropdown_item=0x7f040045;
-        public static final int tooltip=0x7f040046;
+        public static final int recyclermain=0x7f040040;
+        public static final int select_dialog_item_material=0x7f040041;
+        public static final int select_dialog_multichoice_material=0x7f040042;
+        public static final int select_dialog_singlechoice_material=0x7f040043;
+        public static final int support_simple_spinner_dropdown_item=0x7f040044;
+        public static final int tooltip=0x7f040045;
     }
     public static final class menu {
         public static final int activity_main_drawer=0x7f0f0000;

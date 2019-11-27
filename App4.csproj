@@ -63,7 +63,6 @@
     <Compile Include="Notification.cs" />
     <Compile Include="PhotoAlbum.cs" />
     <Compile Include="planmain.cs" />
-    <Compile Include="SQlite.cs" />
     <Compile Include="SwipeToDismiss.cs" />
     <Compile Include="timefragment.cs" />
     <Compile Include="MainActivity.cs" />
@@ -144,18 +143,10 @@
     <AndroidResource Include="Resources\drawable\adwords.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\camera.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\xml\paths.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\layout1.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\plan_main_old.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -313,6 +304,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\view_from_holyrood_park.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\camera.axml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
+﻿using Android.Content;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Support.V4.View;
-using Java.Lang;
 using App4;
 using SQLite;
-using Android.Support.V7.Widget;
+using System.IO;
+using System.Linq;
+using Android.Graphics;
 
 namespace TreePager
 {
@@ -40,18 +34,39 @@ namespace TreePager
         // Create the tree page for the given position:
         public override Java.Lang.Object InstantiateItem(View container, int position)
         {
-            string dbPath = System.IO.Path.Combine(
-                            Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
+            string dbPath = System.IO.Path.Combine(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
+            string dbPath_Photo= System.IO.Path.Combine( Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4_Photo.db");
 
             var db = new SQLiteConnection(dbPath);
+            var db_Photo= new SQLiteConnection(dbPath_Photo);
+
             db.CreateTable<Stock>();
             var table = db.Table<Stock>();
+
+            db_Photo.CreateTable<Photo>();
+            var table_Photo = db_Photo.Table<Photo>();
 
             LayoutInflater inflater = LayoutInflater.From(context);
             LinearLayout linearLayout1 = (LinearLayout)inflater.Inflate(Resource.Layout.layout1, null);
             var imageView = new ImageView(context);
 
-            //switch (position) {
+            //for (int i = 0; i == ListItems.PhotoFileList.Count(); i++)
+            //{
+            //    ListItems.PhotoBitMapList[i] = BitmapFactory.DecodeFile(ListItems.PhotoFileList[i].Path);
+            //}
+            int i= 0;
+            foreach(var s in table_Photo)
+            {
+                ListItems.PhotoBitMapList[i] = BitmapFactory.DecodeFile(s.Path_Photo);
+                    i++;
+            }
+
+            imageView.SetImageBitmap(ListItems.PhotoBitMapList[position]);
+            var viewPager = container.JavaCast<ViewPager>();
+            viewPager.AddView(imageView);
+            return imageView;
+            //switch (position)
+            //{
             //    case 0:
             //        imageView.SetImageResource(treeCatalog[0].imageId);
             //        var viewPager = container.JavaCast<ViewPager>();
@@ -66,85 +81,19 @@ namespace TreePager
 
             //    case 2:
             //        viewPager = container.JavaCast<ViewPager>();
-            //        LinearLayout linearLayout = (LinearLayout)inflater.Inflate(App4.Resource.Layout.camera,null);
+            //        LinearLayout linearLayout = (LinearLayout)inflater.Inflate(App4.Resource.Layout.camera, null);
             //        ((ViewPager)container).AddView(linearLayout);
             //        return linearLayout;
 
-            //    case 3:
-            //        foreach (var a in table)
-            //        {
-            //            LinearLayout linearLayout1 = (LinearLayout)inflater.Inflate(Resource.Layout.layout1, null);
-            //            CardView Text_Card = linearLayout1.FindViewById<CardView>(Resource.Id.Text_Card);
-            //            TextView Text_Card_Plan = linearLayout1.FindViewById<TextView>(Resource.Id.Text_Card_Plan);
-            //            TextView Text_Card_Comment = linearLayout1.FindViewById<TextView>(Resource.Id.Text_Card_Comment);
-            //            TextView Text_Card_Date = (TextView)linearLayout1.FindViewById(Resource.Id.Text_Card_Date);
-            //            TextView Text_Card_Time = linearLayout1.FindViewById<TextView>(Resource.Id.Text_Card_Time);
-
-            //            Text_Card_Date.Text = a.Date;
-            //            Text_Card_Time.Text = a.Time;
-            //            Text_Card_Comment.Text = a.Comment;
-            //            Text_Card_Plan.Text = a.Plan;
-            //        }
-
-            //        return 0;
-            //            default:
+            //    default:
             //        imageView.SetImageResource(treeCatalog[0].imageId);
             //        var viewPager1 = container.JavaCast<ViewPager>();
             //        viewPager1.AddView(imageView);
             //        return imageView;
 
-            switch (position) {
-                case 0:
-                foreach (var a in table)
-                {      
 
-                    //CardView Text_Card = linearLayout1.FindViewById<CardView>(Resource.Id.Text_Card);
-                    //TextView Text_Card_Plan = linearLayout1.FindViewById<TextView>(Resource.Id.Text_Card_Plan);
-                    //TextView Text_Card_Comment = linearLayout1.FindViewById<TextView>(Resource.Id.Text_Card_Comment);
-                    //TextView Text_Card_Date = (TextView)linearLayout1.FindViewById(Resource.Id.Text_Card_Date);
-                    //TextView Text_Card_Time = linearLayout1.FindViewById<TextView>(Resource.Id.Text_Card_Time);
-
-                    //Text_Card_Date.Text = a.Date;
-                    //Text_Card_Time.Text = a.Time;
-                    //Text_Card_Comment.Text = a.Comment;
-                    //Text_Card_Plan.Text = a.Plan;
-
-                    var viewPager = container.JavaCast<ViewPager>();
-                    viewPager.AddView(linearLayout1);
-
-                }
-                    return linearLayout1;
-
-                default:
-                    foreach (var a in table)
-                    {
-
-                        //CardView Text_Card = linearLayout1.FindViewById<CardView>(Resource.Id.Text_Card);
-                        //TextView Text_Card_Plan = linearLayout1.FindViewById<TextView>(Resource.Id.Text_Card_Plan);
-                        //TextView Text_Card_Comment = linearLayout1.FindViewById<TextView>(Resource.Id.Text_Card_Comment);
-                        //TextView Text_Card_Date = (TextView)linearLayout1.FindViewById(Resource.Id.Text_Card_Date);
-                        //TextView Text_Card_Time = linearLayout1.FindViewById<TextView>(Resource.Id.Text_Card_Time);
-
-                        //Text_Card_Date.Text = a.Date;
-                        //Text_Card_Time.Text = a.Time;
-                        //Text_Card_Comment.Text = a.Comment;
-                        //Text_Card_Plan.Text = a.Plan;
-
-                        var viewPager = container.JavaCast<ViewPager>();
-                        viewPager.AddView(linearLayout1);
-
-                    }
-                    return linearLayout1;
-
-
-
-            }
-
+            //}
         }
-
-
-
-
 
         // Remove a tree page from the given position.
         public override void DestroyItem(View container, int position, Java.Lang.Object view)
@@ -152,6 +101,20 @@ namespace TreePager
             var viewPager = container.JavaCast<ViewPager>();
             viewPager.RemoveView(view as View);
         }
+
+        //public void getPhotofromdb()
+        //{
+        //    string dbPath = System.IO.Path.Combine(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4_Photo.db");
+        //    SQLiteConnection db1 = new SQLiteConnection(dbPath);
+        //    db1.CreateTable<Photo>();
+        //    var table = db1.Table<Photo>();
+        //    int i = 0;
+        //    foreach (var s in table)
+        //    {
+        //        ListItems.PhotoFileList[i] = s.Path_Photo;
+        //        i++;
+        //    }
+        //}
 
         // Determine whether a page View is associated with the specific key object
         // returned from InstantiateItem (in this case, they are one in the same):

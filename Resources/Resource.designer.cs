@@ -2672,8 +2672,8 @@ namespace App4
 			// aapt resource value: 0x7f09005c
 			public const int action_mode_close_button = 2131296348;
 			
-			// aapt resource value: 0x7f0900d8
-			public const int action_settings = 2131296472;
+			// aapt resource value: 0x7f0900d0
+			public const int action_settings = 2131296464;
 			
 			// aapt resource value: 0x7f0900ab
 			public const int action_text = 2131296427;
@@ -2783,12 +2783,6 @@ namespace App4
 			// aapt resource value: 0x7f09008b
 			public const int drawer_layout = 2131296395;
 			
-			// aapt resource value: 0x7f0900cc
-			public const int editText1 = 2131296460;
-			
-			// aapt resource value: 0x7f0900ce
-			public const int editText2 = 2131296462;
-			
 			// aapt resource value: 0x7f09007e
 			public const int edit_query = 2131296382;
 			
@@ -2813,12 +2807,6 @@ namespace App4
 			// aapt resource value: 0x7f090072
 			public const int expanded_menu = 2131296370;
 			
-			// aapt resource value: 0x7f0900c8
-			public const int extView1 = 2131296456;
-			
-			// aapt resource value: 0x7f0900ca
-			public const int extView2 = 2131296458;
-			
 			// aapt resource value: 0x7f09008e
 			public const int fab = 2131296398;
 			
@@ -2839,9 +2827,6 @@ namespace App4
 			
 			// aapt resource value: 0x7f0900bd
 			public const int frameLayout1 = 2131296445;
-			
-			// aapt resource value: 0x7f0900cb
-			public const int frameLayout2 = 2131296459;
 			
 			// aapt resource value: 0x7f09000a
 			public const int ghost_view = 2131296266;
@@ -2897,14 +2882,14 @@ namespace App4
 			// aapt resource value: 0x7f090061
 			public const int list_item = 2131296353;
 			
-			// aapt resource value: 0x7f0900d1
-			public const int masked = 2131296465;
+			// aapt resource value: 0x7f0900c9
+			public const int masked = 2131296457;
 			
 			// aapt resource value: 0x7f0900af
 			public const int media_actions = 2131296431;
 			
-			// aapt resource value: 0x7f0900cf
-			public const int message = 2131296463;
+			// aapt resource value: 0x7f0900c7
+			public const int message = 2131296455;
 			
 			// aapt resource value: 0x7f090031
 			public const int middle = 2131296305;
@@ -2918,23 +2903,23 @@ namespace App4
 			// aapt resource value: 0x7f09008f
 			public const int myButton = 2131296399;
 			
-			// aapt resource value: 0x7f0900d2
-			public const int nav_camera = 2131296466;
+			// aapt resource value: 0x7f0900ca
+			public const int nav_camera = 2131296458;
 			
-			// aapt resource value: 0x7f0900d3
-			public const int nav_gallery = 2131296467;
+			// aapt resource value: 0x7f0900cb
+			public const int nav_gallery = 2131296459;
 			
-			// aapt resource value: 0x7f0900d5
-			public const int nav_manage = 2131296469;
+			// aapt resource value: 0x7f0900cd
+			public const int nav_manage = 2131296461;
 			
-			// aapt resource value: 0x7f0900d7
-			public const int nav_send = 2131296471;
+			// aapt resource value: 0x7f0900cf
+			public const int nav_send = 2131296463;
 			
-			// aapt resource value: 0x7f0900d6
-			public const int nav_share = 2131296470;
+			// aapt resource value: 0x7f0900ce
+			public const int nav_share = 2131296462;
 			
-			// aapt resource value: 0x7f0900d4
-			public const int nav_slideshow = 2131296468;
+			// aapt resource value: 0x7f0900cc
+			public const int nav_slideshow = 2131296460;
 			
 			// aapt resource value: 0x7f09008c
 			public const int nav_view = 2131296396;
@@ -3146,9 +3131,6 @@ namespace App4
 			// aapt resource value: 0x7f09001c
 			public const int title = 2131296284;
 			
-			// aapt resource value: 0x7f0900cd
-			public const int title2 = 2131296461;
-			
 			// aapt resource value: 0x7f090071
 			public const int titleDividerNoCustom = 2131296369;
 			
@@ -3191,20 +3173,14 @@ namespace App4
 			// aapt resource value: 0x7f090026
 			public const int useLogo = 2131296294;
 			
-			// aapt resource value: 0x7f0900c7
-			public const int utton1 = 2131296455;
-			
-			// aapt resource value: 0x7f0900c9
-			public const int utton2 = 2131296457;
-			
 			// aapt resource value: 0x7f090016
 			public const int view_offset_helper = 2131296278;
 			
 			// aapt resource value: 0x7f0900a6
 			public const int viewpager = 2131296422;
 			
-			// aapt resource value: 0x7f0900d0
-			public const int visible = 2131296464;
+			// aapt resource value: 0x7f0900c8
+			public const int visible = 2131296456;
 			
 			// aapt resource value: 0x7f09003c
 			public const int withText = 2131296316;
@@ -3461,25 +3437,22 @@ namespace App4
 			public const int plan_main = 2130968639;
 			
 			// aapt resource value: 0x7f040040
-			public const int plan_main_old = 2130968640;
+			public const int RecyclerMain = 2130968640;
 			
 			// aapt resource value: 0x7f040041
-			public const int RecyclerMain = 2130968641;
+			public const int select_dialog_item_material = 2130968641;
 			
 			// aapt resource value: 0x7f040042
-			public const int select_dialog_item_material = 2130968642;
+			public const int select_dialog_multichoice_material = 2130968642;
 			
 			// aapt resource value: 0x7f040043
-			public const int select_dialog_multichoice_material = 2130968643;
+			public const int select_dialog_singlechoice_material = 2130968643;
 			
 			// aapt resource value: 0x7f040044
-			public const int select_dialog_singlechoice_material = 2130968644;
+			public const int support_simple_spinner_dropdown_item = 2130968644;
 			
 			// aapt resource value: 0x7f040045
-			public const int support_simple_spinner_dropdown_item = 2130968645;
-			
-			// aapt resource value: 0x7f040046
-			public const int tooltip = 2130968646;
+			public const int tooltip = 2130968645;
 			
 			static Layout()
 			{

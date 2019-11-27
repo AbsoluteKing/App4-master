@@ -1,13 +1,8 @@
-﻿using Android;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V4.App;
-using Android.Views;
 using Android.Widget;
-using Java.IO;
 using SQLite;
 using System;
 using System.IO;
@@ -19,14 +14,11 @@ namespace App4
     {
         TextView timeDisplay;
         TextView Datedisplay;
-        DateTime DateTime_Date;
-        DateTime DateTime_Time;
         int Date_year = new DateTime().Year;
         int Date_month = new DateTime().Month;
         int Date_day = new DateTime().Day;
         int Date_hour = new DateTime().Hour;
         int Date_minute = new DateTime().Minute;
-        static readonly int NOTIFICATION_ID = 1000;
         public static readonly string CHANNEL_ID = "location_notification";
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -68,15 +60,11 @@ namespace App4
 
         public void DoSomeDataAccess(DateTime SelectedDateTime, String SelectedPlan, String SelectedComment)
         {
-            System.Console.WriteLine("Creating database, if it doesn't already exist");
-
-
-
-        const string permission = Manifest.Permission.WriteExternalStorage;
-            if (CheckSelfPermission(permission) == Permission.Denied)
-            {
-                ActivityCompat.RequestPermissions(this, new[]{Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera}, 0);
-            }
+            //const string permission = Manifest.Permission.WriteExternalStorage;
+            //if (CheckSelfPermission(permission) == Permission.Denied)
+            //{
+            //    ActivityCompat.RequestPermissions(this, new[]{Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera}, 0);
+            //}
             string dbPath = Path.Combine(
                             Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
             SQLiteConnection db = new SQLiteConnection(dbPath);
@@ -98,19 +86,18 @@ namespace App4
 
         public void SortCard()
         {
-            const string permission = Manifest.Permission.WriteExternalStorage;
-            if (CheckSelfPermission(permission) == Permission.Denied)
-            {
-                ActivityCompat.RequestPermissions(this, new[]
-    {
-                Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera
-            }, 0);
-            }
+    //        const string permission = Manifest.Permission.WriteExternalStorage;
+    //        if (CheckSelfPermission(permission) == Permission.Denied)
+    //        {
+    //            ActivityCompat.RequestPermissions(this, new[]
+    //{
+    //            Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera
+    //        }, 0);
+    //        }
             string dbPath = Path.Combine(
                             Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
             SQLiteConnection db = new SQLiteConnection(dbPath);
             var table_sorted = db.Query<Stock>("SELECT * FROM Items ORDER BY dateTime ASC");
-
 
             foreach (var s in table_sorted)
             {
@@ -123,7 +110,6 @@ namespace App4
             new DatePickerFragment(delegate (DateTime time)
             {
                 Datedisplay.Text = time.ToShortDateString();
-                //DateTime_Date = time;
                 Date_year = time.Year;
                 Date_month = time.Month;
                 Date_day = time.Day;
@@ -131,8 +117,6 @@ namespace App4
 
             .Show(FragmentManager, DatePickerFragment.TAG);
         }
-
-
 
         void TimeSelectOnClick(object sender, EventArgs eventArgs)
         {
@@ -146,11 +130,9 @@ namespace App4
             frag.Show(FragmentManager, TimePickerFragment.TAG);
 
         }
-
-
+        
         void CreateNotification(DateTime dateTime,String EditText_Plan, String EditText_Comment)
         {
-
             CreateNotificationChannel();
             var alarmIntent = new Intent(this, typeof(AlarmReceiver));
             alarmIntent.PutExtra("title","予定が近づいています："+ EditText_Plan);
@@ -160,7 +142,6 @@ namespace App4
 
             var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
             alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() /*+ GetDateTimeinMillis(dateTime)*/, pending);
-            System.Console.WriteLine("あいえう");
         }
         protected long GetDateTimeinMillis(DateTime SelectedDateTime)
         {
@@ -175,9 +156,6 @@ namespace App4
         {
             if (Build.VERSION.SdkInt < BuildVersionCodes.O)
             {
-                // Notification channels are new in API 26 (and not a part of the
-                // support library). There is no need to create a notification
-                // channel on older versions of Android.
                 return;
             }
 

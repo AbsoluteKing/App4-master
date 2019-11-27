@@ -140,7 +140,6 @@ C:\App4-master\obj\Debug\81\res\drawable\adwords.png
 C:\App4-master\obj\Debug\81\res\layout\camera.xml
 C:\App4-master\obj\Debug\81\res\xml\paths.xml
 C:\App4-master\obj\Debug\81\res\layout\layout1.xml
-C:\App4-master\obj\Debug\81\res\layout\plan_main_old.xml
 C:\App4-master\obj\Debug\81\res\layout\plan_main.xml
 C:\App4-master\obj\Debug\81\R.cs.flag
 C:\App4-master\obj\Debug\81\R.txt

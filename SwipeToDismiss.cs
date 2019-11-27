@@ -28,30 +28,24 @@ namespace App4 {
             ListItems.CommentList.RemoveAt(position);
             ListItems.PlanList.RemoveAt(position);
 
-                            string dbPath = Path.Combine(
-                                Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
-        SQLiteConnection db = new SQLiteConnection(dbPath);
+             string dbPath = Path.Combine(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
+             SQLiteConnection db = new SQLiteConnection(dbPath);
 
-        mAdapter.NotifyItemRemoved(position);
+            mAdapter.NotifyItemRemoved(position);
             int SwipedId= ListItems.IdList[position];
 
             db.Query<Stock>("DELETE FROM Items WHERE _id=?",SwipedId);
 
             ListItems.Syokika();
             Getfromdb();
-
-            Console.WriteLine("あいうえお："+SwipedId+"あああああ："+position);
-
-
         }
 
         public void Getfromdb()
         {
-
-            string dbPath = Path.Combine(
-                                Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
+            string dbPath = Path.Combine( Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
             SQLiteConnection db = new SQLiteConnection(dbPath);
             var table_sorted = db.Query<Stock>("SELECT * FROM Items ORDER BY dateTime ASC");
+
             foreach (var a in table_sorted)
             {
                 ListItems.IdList.Add(a.Id);
