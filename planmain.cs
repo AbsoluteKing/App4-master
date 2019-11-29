@@ -47,8 +47,6 @@ namespace App4
                 }
                 else
                 {
-                    System.Console.WriteLine("あいうえお："+dateTime);
-                    System.Console.WriteLine("かきくえこ"+dateDefault);
                     DoSomeDataAccess(dateTime, editText_Plan.Text, editText_Comment.Text);
                     CreateNotification(dateTime, editText_Plan.Text, editText_Comment.Text);
                     Intent intent = new Intent(this, typeof(App4.MainActivity));
@@ -60,11 +58,6 @@ namespace App4
 
         public void DoSomeDataAccess(DateTime SelectedDateTime, String SelectedPlan, String SelectedComment)
         {
-            //const string permission = Manifest.Permission.WriteExternalStorage;
-            //if (CheckSelfPermission(permission) == Permission.Denied)
-            //{
-            //    ActivityCompat.RequestPermissions(this, new[]{Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera}, 0);
-            //}
             string dbPath = Path.Combine(
                             Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
             SQLiteConnection db = new SQLiteConnection(dbPath);

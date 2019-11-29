@@ -14,7 +14,6 @@ public class TreePagerAdapter
 			"n_instantiateItem:(Landroid/view/View;I)Ljava/lang/Object;:GetInstantiateItem_Landroid_view_View_IHandler\n" +
 			"n_destroyItem:(Landroid/view/View;ILjava/lang/Object;)V:GetDestroyItem_Landroid_view_View_ILjava_lang_Object_Handler\n" +
 			"n_isViewFromObject:(Landroid/view/View;Ljava/lang/Object;)Z:GetIsViewFromObject_Landroid_view_View_Ljava_lang_Object_Handler\n" +
-			"n_getPageTitle:(I)Ljava/lang/CharSequence;:GetGetPageTitle_IHandler\n" +
 			"";
 		mono.android.Runtime.register ("TreePager.TreePagerAdapter, App4", TreePagerAdapter.class, __md_methods);
 	}
@@ -65,14 +64,6 @@ public class TreePagerAdapter
 	}
 
 	private native boolean n_isViewFromObject (android.view.View p0, java.lang.Object p1);
-
-
-	public java.lang.CharSequence getPageTitle (int p0)
-	{
-		return n_getPageTitle (p0);
-	}
-
-	private native java.lang.CharSequence n_getPageTitle (int p0);
 
 	private java.util.ArrayList refList;
 	public void monodroidAddReference (java.lang.Object obj)

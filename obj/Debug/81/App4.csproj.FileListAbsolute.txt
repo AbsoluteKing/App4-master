@@ -194,6 +194,7 @@ C:\App4-master\obj\Debug\81\res\drawable\versailles_fountains.jpg
 C:\App4-master\obj\Debug\81\res\drawable\versailles_gates.jpg
 C:\App4-master\obj\Debug\81\res\drawable\victoria_albert.jpg
 C:\App4-master\obj\Debug\81\res\drawable\view_from_holyrood_park.jpg
+C:\App4-master\obj\Debug\81\App4.csprojAssemblyReference.cache
 C:\App4-master\bin\Debug\Mono.Android.pdb
 C:\App4-master\bin\Debug\mscorlib.pdb
 C:\App4-master\bin\Debug\System.Core.pdb

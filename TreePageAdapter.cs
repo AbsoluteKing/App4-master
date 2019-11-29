@@ -5,46 +5,49 @@ using Android.Widget;
 using Android.Support.V4.View;
 using App4;
 using SQLite;
-using System.IO;
-using System.Linq;
 using Android.Graphics;
 
-namespace TreePager
+namespace App4
 {
     class TreePagerAdapter : PagerAdapter
     {
         Context context;
 
         // Underlying data (tree catalog):
-        public TreeCatalog treeCatalog;
+        //public TreeCatalog treeCatalog;
 
         // Load the adapter with the tree catalog at construction time:
-        public TreePagerAdapter(Context context, TreeCatalog treeCatalog)
+        public TreePagerAdapter(Context context)
         {
             this.context = context;
-            this.treeCatalog = treeCatalog;
+            //this.treeCatalog = treeCatalog;
         }
 
         // Return the number of trees in the catalog:
         public override int Count
         {
-            get { return 3; }
+
+            get
+            {
+                return ListItems.PhotoBitMapList.Count;
+            }
         }
 
         // Create the tree page for the given position:
         public override Java.Lang.Object InstantiateItem(View container, int position)
         {
-            string dbPath = System.IO.Path.Combine(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
-            string dbPath_Photo= System.IO.Path.Combine( Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4_Photo.db");
+            //string dbPath = System.IO.Path.Combine(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
+            //string dbPath_Photo= System.IO.Path.Combine( Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4_Photo.db");
 
-            var db = new SQLiteConnection(dbPath);
-            var db_Photo= new SQLiteConnection(dbPath_Photo);
+            //var db = new SQLiteConnection(dbPath);
+            //var db_Photo= new SQLiteConnection(dbPath_Photo);
+            //int numphoto=0;
 
-            db.CreateTable<Stock>();
-            var table = db.Table<Stock>();
+            //db.CreateTable<Stock>();
+            //var table = db.Table<Stock>();
 
-            db_Photo.CreateTable<Photo>();
-            var table_Photo = db_Photo.Table<Photo>();
+            //db_Photo.CreateTable<Photo>();
+            //var table_Photo = db_Photo.Table<Photo>();
 
             LayoutInflater inflater = LayoutInflater.From(context);
             LinearLayout linearLayout1 = (LinearLayout)inflater.Inflate(Resource.Layout.layout1, null);
@@ -53,13 +56,12 @@ namespace TreePager
             //for (int i = 0; i == ListItems.PhotoFileList.Count(); i++)
             //{
             //    ListItems.PhotoBitMapList[i] = BitmapFactory.DecodeFile(ListItems.PhotoFileList[i].Path);
+            //}            //foreach(var s in table_Photo)
+            //{
+            //    ListItems.PhotoBitMapList.Add(BitmapFactory.DecodeFile(s.Path_Photo));
+            //    numphoto++;
             //}
-            int i= 0;
-            foreach(var s in table_Photo)
-            {
-                ListItems.PhotoBitMapList[i] = BitmapFactory.DecodeFile(s.Path_Photo);
-                    i++;
-            }
+
 
             imageView.SetImageBitmap(ListItems.PhotoBitMapList[position]);
             var viewPager = container.JavaCast<ViewPager>();
@@ -124,9 +126,9 @@ namespace TreePager
         }
 
         // Display a caption for each Tree page in the PagerTitleStrip:
-        public override Java.Lang.ICharSequence GetPageTitleFormatted(int position)
-        {
-            return new Java.Lang.String(treeCatalog[position].caption);
-        }
+        //public override Java.Lang.ICharSequence GetPageTitleFormatted(int position)
+        //{
+        //    return new Java.Lang.String(treeCatalog[position].caption);
+        //}
     }
 }

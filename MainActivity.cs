@@ -12,7 +12,6 @@ using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.App;
 using Android.Support.V4.Content;
-using Android.Support.V4.Util;
 using Android.Support.V4.View;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
@@ -74,6 +73,7 @@ namespace App4
         // Photo album that is managed by the adapter:
         PhotoAlbum mPhotoAlbum;
         private ImageView _imageView;
+        const int PICK_CONTACT_REQUEST = 1;
 
         internal static readonly string COUNT_KEY = "count";
         const string permission = Manifest.Permission.WriteExternalStorage;
@@ -183,11 +183,13 @@ namespace App4
 
             if (id == Resource.Id.nav_camera)
             {
-                TakeAPicture(item);
+                Intent intent = new Intent(this, typeof(CameraAppDemo.MainActivity));
+                StartActivity(intent);
+                //TakeAPicture(item);
             }
             else if (id == Resource.Id.nav_gallery)
             {
-                Intent intent = new Intent(this, typeof(TreePager.TreeMain));
+                Intent intent = new Intent(this, typeof(App4.TreeMain));
                 StartActivity(intent);
             }
             else if (id == Resource.Id.nav_slideshow)
@@ -223,11 +225,11 @@ namespace App4
 
         private void TakeAPicture(IMenuItem item)
         {
-            _imageView = FindViewById<ImageView>(Resource.Id.imageView1);
             CreateDirectoryForPictures();
             Intent intent = new Intent(MediaStore.ActionImageCapture);
+            const int PICK_CONTACT_REQUEST = 1;
 
-            string Name = String.Format("myPhoto_{0}.jpg" , Guid.NewGuid());
+            string Name = string.Format("myPhoto_{0}.jpg" , Guid.NewGuid());
             string dbPath= System.IO.Path.Combine(Environment.GetExternalStoragePublicDirectory(Environment.DirectoryDcim).ToString(), "App4_Photo.db");
             string photoPath = System.IO.Path.Combine(App._dir.Path, Name);
             SQLiteConnection db = new SQLiteConnection(dbPath);
@@ -240,37 +242,37 @@ namespace App4
             });
 
             App._file = new File(App._dir, Name);
-            System.Console.WriteLine("ファイル："+App._file);
+
+            bool a = IsThereAnAppToTakePictures();
+
+            Console.WriteLine("ああああああああああああ："+a);
+
+            App._file.CreateNewFile();
+
+            System.Console.WriteLine("ここまでセーフ-----------------------------------");
 
             Uri uri = FileProvider.GetUriForFile(this, "aiu", App._file);
-            
 
-            intent.PutExtra(MediaStore.ExtraOutput, App._file);
-            //Bitmap bitmap = (Bitmap)Data.getdata();
-            StartActivityForResult(intent, 0);
+            intent.PutExtra(MediaStore.ExtraOutput, uri);
+            StartActivityForResult(intent, PICK_CONTACT_REQUEST);
+
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
+            System.Console.WriteLine("ここまでセーフ-----------------------------------2");
             base.OnActivityResult(requestCode, resultCode, data);
-            AtomicFile atomicFile = new AtomicFile(App._file);
 
+            Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
+            
+            Uri contentUri = FileProvider.GetUriForFile(this, "aiu", App._file);
 
             // Make it available in the gallery
-            Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
-            Uri contentUri = FileProvider.GetUriForFile(this, "aiu", App._file);
             mediaScanIntent.SetData(contentUri);
             SendBroadcast(mediaScanIntent);
 
             Intent intent = new Intent(this, typeof(MainActivity));
             StartActivity(intent);
-        }
-
-        private Android.Graphics.Bitmap NGetBitmap(Android.Net.Uri uriImage)
-        {
-            Android.Graphics.Bitmap mBitmap = null;
-            mBitmap = Android.Provider.MediaStore.Images.Media.GetBitmap(this.ContentResolver, uriImage);
-            return mBitmap;
         }
 
         private void CreateDirectoryForPictures()
@@ -338,7 +340,7 @@ namespace App4
             DateList = new List<string>();
             CommentList = new List<string>();
             PlanList = new List<string>();
-        }
+            PhotoBitMapList = new List<Bitmap>();        }
 
     }
 

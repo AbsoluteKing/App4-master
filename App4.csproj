@@ -59,6 +59,7 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeFile1.cs" />
     <Compile Include="datefragment.cs" />
     <Compile Include="Notification.cs" />
     <Compile Include="PhotoAlbum.cs" />
