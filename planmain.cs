@@ -58,6 +58,8 @@ namespace App4
 
         public void DoSomeDataAccess(DateTime SelectedDateTime, String SelectedPlan, String SelectedComment)
         {
+
+            //入力された文をデータベースに保存
             string dbPath = Path.Combine(
                             Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
             SQLiteConnection db = new SQLiteConnection(dbPath);
@@ -79,14 +81,7 @@ namespace App4
 
         public void SortCard()
         {
-    //        const string permission = Manifest.Permission.WriteExternalStorage;
-    //        if (CheckSelfPermission(permission) == Permission.Denied)
-    //        {
-    //            ActivityCompat.RequestPermissions(this, new[]
-    //{
-    //            Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera
-    //        }, 0);
-    //        }
+            //日付順にデータベースを並び替える
             string dbPath = Path.Combine(
                             Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
             SQLiteConnection db = new SQLiteConnection(dbPath);
@@ -100,6 +95,7 @@ namespace App4
 
         private void DateSelectOnClick(object sender, EventArgs eventArgs)
         {
+            //日付を選択するフラグメントを起動
             new DatePickerFragment(delegate (DateTime time)
             {
                 Datedisplay.Text = time.ToShortDateString();
@@ -113,6 +109,7 @@ namespace App4
 
         void TimeSelectOnClick(object sender, EventArgs eventArgs)
         {
+            //時刻を選択するフラグメント起動
             TimePickerFragment frag = TimePickerFragment.NewInstance(
             delegate (DateTime time)
             {
@@ -126,6 +123,7 @@ namespace App4
         
         void CreateNotification(DateTime dateTime,String EditText_Plan, String EditText_Comment)
         {
+            //通知を作成
             CreateNotificationChannel();
             var alarmIntent = new Intent(this, typeof(AlarmReceiver));
             alarmIntent.PutExtra("title","予定が近づいています："+ EditText_Plan);
@@ -134,10 +132,11 @@ namespace App4
             var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
 
             var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
-            alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() /*+ GetDateTimeinMillis(dateTime)*/, pending);
+            alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + GetDateTimeinMillis(dateTime), pending);
         }
         protected long GetDateTimeinMillis(DateTime SelectedDateTime)
         {
+            //現在の日付から通知までの日付の時間をミリ秒にして出力
             DateTime currentDate = DateTime.Now;
             System.Console.WriteLine(currentDate);
             TimeSpan TimeLag = SelectedDateTime - currentDate;

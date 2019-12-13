@@ -11,7 +11,7 @@ public class TreePagerAdapter
 	static {
 		__md_methods = 
 			"n_getCount:()I:GetGetCountHandler\n" +
-			"n_instantiateItem:(Landroid/view/View;I)Ljava/lang/Object;:GetInstantiateItem_Landroid_view_View_IHandler\n" +
+			"n_instantiateItem:(Landroid/view/ViewGroup;I)Ljava/lang/Object;:GetInstantiateItem_Landroid_view_ViewGroup_IHandler\n" +
 			"n_destroyItem:(Landroid/view/View;ILjava/lang/Object;)V:GetDestroyItem_Landroid_view_View_ILjava_lang_Object_Handler\n" +
 			"n_isViewFromObject:(Landroid/view/View;Ljava/lang/Object;)Z:GetIsViewFromObject_Landroid_view_View_Ljava_lang_Object_Handler\n" +
 			"";
@@ -26,13 +26,6 @@ public class TreePagerAdapter
 			mono.android.TypeManager.Activate ("TreePager.TreePagerAdapter, App4", "", this, new java.lang.Object[] {  });
 	}
 
-	public TreePagerAdapter (android.content.Context p0, md568520490024b97edd8b5d3c7948179ad.TreeCatalog p1)
-	{
-		super ();
-		if (getClass () == TreePagerAdapter.class)
-			mono.android.TypeManager.Activate ("TreePager.TreePagerAdapter, App4", "Android.Content.Context, Mono.Android:TreePager.TreeCatalog, App4", this, new java.lang.Object[] { p0, p1 });
-	}
-
 
 	public int getCount ()
 	{
@@ -42,12 +35,12 @@ public class TreePagerAdapter
 	private native int n_getCount ();
 
 
-	public java.lang.Object instantiateItem (android.view.View p0, int p1)
+	public java.lang.Object instantiateItem (android.view.ViewGroup p0, int p1)
 	{
 		return n_instantiateItem (p0, p1);
 	}
 
-	private native java.lang.Object n_instantiateItem (android.view.View p0, int p1);
+	private native java.lang.Object n_instantiateItem (android.view.ViewGroup p0, int p1);
 
 
 	public void destroyItem (android.view.View p0, int p1, java.lang.Object p2)

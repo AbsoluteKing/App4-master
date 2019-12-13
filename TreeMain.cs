@@ -11,6 +11,7 @@ using App4;
 using Android.Support.V7.Widget;
 using SQLite;
 using Android.Graphics;
+using TreePager;
 
 namespace App4
 {
@@ -25,30 +26,42 @@ namespace App4
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
-
             // Locate the ViewPager:
             ViewPager viewPager = FindViewById<ViewPager>(Resource.Id.viewpager);
+            
 
             LayoutInflater inflater = (LayoutInflater)GetSystemService(LayoutInflaterService);
             // Instantiate the tree catalog:
             treeCatalog = new TreeCatalog();
-
-            //string dbPath_Photo = System.IO.Path.Combine(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4_Photo.db");
+            
+            string dbPath_Photo = System.IO.Path.Combine(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4_Photo.db");
+            
             //var db_Photo = new SQLiteConnection(dbPath_Photo);
-            //db_Photo.CreateTable<Photo>();
-            //var table_Photo = db_Photo.Table<Photo>();
-            //foreach (var s in table_Photo)
-            //{
-            //    ListItems.PhotoBitMapList.Add(BitmapFactory.DecodeFile(s.Path_Photo));
-            //}
 
 
-            // Set up the adapter for the ViewPager
-            viewPager.Adapter=new TreePagerAdapter(this);
+
+            using (var db_Photo = new SQLiteConnection(dbPath_Photo))
+            {
+                db_Photo.CreateTable<Photo>();
+                var table_Photo = db_Photo.Table<Photo>();
+
+                foreach(var s in table_Photo) {
+                    ListItems.PhotoPathList.Add(s.Path_Photo);
+                }
+
+            } // ここでFileStreamオブジェクトのDisposeメソッドが呼び出される
+            
+
+            // Set up the adapter for the ViewPager\
+            viewPager.Adapter=new TreePagerAdapter(this,treeCatalog);
         }
 
         public override void OnBackPressed()
         {
+            TreePagerAdapter.bmp = null;
+            ListItems.Syokika();
+            
+            Console.WriteLine("ああああああああああああああああああああああああああああああ");
             Finish();
         }
     }

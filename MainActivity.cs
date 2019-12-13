@@ -52,12 +52,12 @@ namespace App4
     [Table("Items")]
     public class Photo
     {
-        [PrimaryKey, AutoIncrement, Column("_id1")]
+        [PrimaryKey, AutoIncrement, Column("_id")]
         public int Id_Photo { get; set; }
         public string Path_Photo { get; set; }
     }
 
-    //（派生クラス名）：基底クラス名
+
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class  MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
@@ -73,7 +73,7 @@ namespace App4
         // Photo album that is managed by the adapter:
         PhotoAlbum mPhotoAlbum;
         private ImageView _imageView;
-        const int PICK_CONTACT_REQUEST = 1;
+        const int PICK_CONTACT_REQUEST = 1221;
 
         internal static readonly string COUNT_KEY = "count";
         const string permission = Manifest.Permission.WriteExternalStorage;
@@ -83,6 +83,7 @@ namespace App4
 
             //Permission取得
             const string permission = Manifest.Permission.WriteExternalStorage;
+            int flag = 0;
             if (CheckSelfPermission(permission) == Permission.Denied)
             {
                 ActivityCompat.RequestPermissions(this, new[]{Manifest.Permission.WriteExternalStorage, Manifest.Permission.Camera,Manifest.Permission.ReadExternalStorage}, 0);
@@ -91,7 +92,16 @@ namespace App4
             //初期化
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
+
+            Console.WriteLine("ああああああああああああ");
             ListItems.Syokika();
+            GC.Collect();
+
+            if (CheckSelfPermission(permission) == Permission.Granted)
+            {
+                Getfromdb();
+
+            }
 
             // Get our RecyclerView layout:
             mRecyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
@@ -104,7 +114,6 @@ namespace App4
 
             // Or use the built-in grid layout manager (two horizontal rows):
             // mLayoutManager = new GridLayoutManager
-            //        (this, 2, GridLayoutManager.Horizontal, false);
 
             // Plug the layout manager into the RecyclerView:
             mRecyclerView.SetLayoutManager(mLayoutManager);
@@ -183,38 +192,23 @@ namespace App4
 
             if (id == Resource.Id.nav_camera)
             {
-                Intent intent = new Intent(this, typeof(CameraAppDemo.MainActivity));
-                StartActivity(intent);
-                //TakeAPicture(item);
+                TakeAPicture(item);
+                //Intent intent = new Intent(this, typeof(CameraAppDemo.MainActivity));
+                //StartActivity(intent);
             }
             else if (id == Resource.Id.nav_gallery)
             {
                 Intent intent = new Intent(this, typeof(App4.TreeMain));
                 StartActivity(intent);
             }
-            else if (id == Resource.Id.nav_slideshow)
-            {
-            }
+
             else if (id == Resource.Id.nav_manage)
             {
-                Intent intent = new Intent(this,typeof(App4.plan_main));
+                Intent intent = new Intent();
+                intent.SetAction(Settings.ActionApplicationDetailsSettings);
+                intent.SetData(Uri.Parse("package:" + this.PackageName));
+                System.Console.WriteLine("package:" + this.PackageName);
                 StartActivity(intent);
-
-            }
-            else if (id == Resource.Id.nav_share)
-            {
-                var alarmIntent = new Intent(this, typeof(AlarmReceiver));
-                alarmIntent.PutExtra("title", "Hello");
-                alarmIntent.PutExtra("message", "World!");
-
-                var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
-
-                var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
-                alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 5 * 1000, pending);
-                Console.WriteLine("あいえう");
-            }
-            else if (id == Resource.Id.nav_send)
-            {
 
             }
 
@@ -226,53 +220,46 @@ namespace App4
         private void TakeAPicture(IMenuItem item)
         {
             CreateDirectoryForPictures();
+            GC.Collect();
             Intent intent = new Intent(MediaStore.ActionImageCapture);
-            const int PICK_CONTACT_REQUEST = 1;
 
-            string Name = string.Format("myPhoto_{0}.jpg" , Guid.NewGuid());
-            string dbPath= System.IO.Path.Combine(Environment.GetExternalStoragePublicDirectory(Environment.DirectoryDcim).ToString(), "App4_Photo.db");
-            string photoPath = System.IO.Path.Combine(App._dir.Path, Name);
-            SQLiteConnection db = new SQLiteConnection(dbPath);
+            App._file = new File(App._dir, String.Format("myPhoto_{0}.jpg", Guid.NewGuid()));
 
-            db.CreateTable<Photo>();
+            string dbPath_Photo = System.IO.Path.Combine(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4_Photo.db");
+            var db_Photo = new SQLiteConnection(dbPath_Photo);
+            db_Photo.CreateTable<Photo>();
 
-            db.Insert(new Photo()
+            db_Photo.Insert(new Photo()
             {
-                Path_Photo = photoPath
+                Path_Photo = App._file.Path
             });
 
-            App._file = new File(App._dir, Name);
-
-            bool a = IsThereAnAppToTakePictures();
-
-            Console.WriteLine("ああああああああああああ："+a);
-
-            App._file.CreateNewFile();
-
-            System.Console.WriteLine("ここまでセーフ-----------------------------------");
-
             Uri uri = FileProvider.GetUriForFile(this, "aiu", App._file);
+            System.Console.WriteLine("GC.GetTotalMemory:" + GC.GetTotalMemory(true).ToString());
 
             intent.PutExtra(MediaStore.ExtraOutput, uri);
-            StartActivityForResult(intent, PICK_CONTACT_REQUEST);
-
+            this.StartActivityForResult(intent, PICK_CONTACT_REQUEST);
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            System.Console.WriteLine("ここまでセーフ-----------------------------------2");
-            base.OnActivityResult(requestCode, resultCode, data);
-
-            Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
-            
-            Uri contentUri = FileProvider.GetUriForFile(this, "aiu", App._file);
+            //base.OnActivityResult(requestCode, resultCode, data);
 
             // Make it available in the gallery
+
+            System.Console.WriteLine(resultCode);
+            Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
+            Uri contentUri = FileProvider.GetUriForFile(this, "aiu", App._file);
             mediaScanIntent.SetData(contentUri);
             SendBroadcast(mediaScanIntent);
 
-            Intent intent = new Intent(this, typeof(MainActivity));
-            StartActivity(intent);
+            // Display in ImageView. We will resize the bitmap to fit the display
+            // Loading the full sized image will consume to much memory 
+            // and cause the application to crash.
+
+            // Dispose of the Java side bitmap.
+            GC.Collect();
+            //Finish();
         }
 
         private void CreateDirectoryForPictures()
@@ -293,6 +280,36 @@ namespace App4
                 PackageManager.QueryIntentActivities(intent, PackageInfoFlags.MatchDefaultOnly);
             return availableActivities != null && availableActivities.Count > 0;
         }
+
+        //public void SortCard()
+        //{
+        //    string dbPath = System.IO.Path.Combine(
+        //                    Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
+        //    SQLiteConnection db = new SQLiteConnection(dbPath);
+        //    var table_sorted = db.Query<Stock>("SELECT * FROM Items ORDER BY dateTime ASC");
+
+        //    foreach (var s in table_sorted)
+        //    {
+        //        System.Console.WriteLine("ソート後：" + s.Id + "  " + s.dateTime);
+        //    }
+        //}
+
+        protected void Getfromdb()
+        {
+            string dbPath = System.IO.Path.Combine(
+                                Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
+            SQLiteConnection db = new SQLiteConnection(dbPath);
+            var table_sorted = db.Query<Stock>("SELECT * FROM Items ORDER BY dateTime ASC");
+            foreach (var a in table_sorted)
+            {
+                ListItems.IdList.Add(a.Id);
+                ListItems.DateList.Add(a.dateTime.Year + "/" + a.dateTime.Month + "/" + a.dateTime.Day);
+                ListItems.TimeList.Add(a.dateTime.Hour.ToString() + ":" + a.dateTime.Minute.ToString());
+                ListItems.CommentList.Add(a.Comment);
+                ListItems.PlanList.Add(a.Plan);
+            }
+        }
+
 
     }
 
@@ -329,7 +346,7 @@ namespace App4
         public static List<string> CommentList = new List<string>();
         public static List<string> PlanList = new List<string>();
         
-        public static List<File> PhotoFileList = new List<File>();
+        public static List<string> PhotoPathList = new List<string>();
         public static List<Bitmap> PhotoBitMapList = new List<Bitmap>();
         public static List<ImageView> PhotoImageViewList = new List<ImageView>();
 
@@ -340,9 +357,12 @@ namespace App4
             DateList = new List<string>();
             CommentList = new List<string>();
             PlanList = new List<string>();
-            PhotoBitMapList = new List<Bitmap>();        }
+            PhotoBitMapList = new List<Bitmap>();}
+
+
 
     }
+
 
 
     //----------------------------------------------------------------------
@@ -361,7 +381,6 @@ namespace App4
         public PhotoAlbumAdapter(PhotoAlbum photoAlbum)
         {
             mPhotoAlbum = photoAlbum;
-            //Getfromdb();
         }
 
         // Create a new photo CardView (invoked by the layout manager): 
@@ -386,23 +405,19 @@ namespace App4
 
             // Set the ImageView and TextView in this ViewHolder's CardView 
             // from this position in the photo album:
-            //vh.Image.SetImageResource (mPhotoAlbum[position].PhotoID);
-            //vh.Caption.Text = mPhotoAlbum[position].Caption;
-
             vh.Text_Card_Date.Text = ListItems.DateList[position];
             vh.Text_Card_Time.Text = ListItems.TimeList[position];
             vh.Text_Card_Plan.Text = ListItems.PlanList[position];
             vh.Text_Card_Comment.Text = ListItems.CommentList[position];
         }
-
-
-
+        
         // Return the number of photos available in the photo album:
         public override int ItemCount
         {
             get { return ListItems.DateList.Count; }
-            //get { return mPhotoAlbum.NumPhotos; }
         }
+
+
 
         // Raise an event when the item-click takes place:
         void OnClick(int position)
