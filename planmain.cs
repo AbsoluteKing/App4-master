@@ -50,7 +50,7 @@ namespace App4
                     DoSomeDataAccess(dateTime, editText_Plan.Text, editText_Comment.Text);
                     CreateNotification(dateTime, editText_Plan.Text, editText_Comment.Text);
                     Intent intent = new Intent(this, typeof(App4.MainActivity));
-                    SortCard();
+                    //SortCard();
                     StartActivity(intent);
                 }
             };
@@ -79,18 +79,16 @@ namespace App4
             }
         }
 
-        public void SortCard()
+        public static System.Collections.Generic.List<Stock> SortCard(SQLiteConnection db)
         {
             //日付順にデータベースを並び替える
-            string dbPath = Path.Combine(
-                            Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
-            SQLiteConnection db = new SQLiteConnection(dbPath);
             var table_sorted = db.Query<Stock>("SELECT * FROM Items ORDER BY dateTime ASC");
 
             foreach (var s in table_sorted)
             {
                 System.Console.WriteLine("ソート後：" + s.Id + "  " + s.dateTime);
             }
+            return table_sorted;
         }
 
         private void DateSelectOnClick(object sender, EventArgs eventArgs)
@@ -134,6 +132,7 @@ namespace App4
             var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
             alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + GetDateTimeinMillis(dateTime), pending);
         }
+
         protected long GetDateTimeinMillis(DateTime SelectedDateTime)
         {
             //現在の日付から通知までの日付の時間をミリ秒にして出力

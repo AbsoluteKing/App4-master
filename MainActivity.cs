@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Android;
 using Android.App;
 using Android.Content;
@@ -8,7 +7,6 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
 using Android.Provider;
-using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.App;
 using Android.Support.V4.Content;
@@ -21,14 +19,13 @@ using Android.Views;
 using Android.Widget;
 using RecyclerViewer;
 using SQLite;
-using static Android.Graphics.Bitmap;
 using ActionBarDrawerToggle = Android.Support.V7.App.ActionBarDrawerToggle;
 using Environment = Android.OS.Environment;
 using File = Java.IO.File;
 using Uri = Android.Net.Uri;
 
 namespace App4
-{ 
+{
 
     public static class App
     {
@@ -93,9 +90,6 @@ namespace App4
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
-            Console.WriteLine("ああああああああああああ");
-            ListItems.Syokika();
-            GC.Collect();
 
             if (CheckSelfPermission(permission) == Permission.Granted)
             {
@@ -219,7 +213,10 @@ namespace App4
 
         private void TakeAPicture(IMenuItem item)
         {
+            //directory作成
             CreateDirectoryForPictures();
+
+            //これがないとメモリで落ちる
             GC.Collect();
             Intent intent = new Intent(MediaStore.ActionImageCapture);
 
@@ -234,8 +231,9 @@ namespace App4
                 Path_Photo = App._file.Path
             });
 
-            Uri uri = FileProvider.GetUriForFile(this, "aiu", App._file);
             System.Console.WriteLine("GC.GetTotalMemory:" + GC.GetTotalMemory(true).ToString());
+
+            Uri uri = FileProvider.GetUriForFile(this, "aiu", App._file);
 
             intent.PutExtra(MediaStore.ExtraOutput, uri);
             this.StartActivityForResult(intent, PICK_CONTACT_REQUEST);
@@ -259,7 +257,6 @@ namespace App4
 
             // Dispose of the Java side bitmap.
             GC.Collect();
-            //Finish();
         }
 
         private void CreateDirectoryForPictures()
@@ -281,25 +278,15 @@ namespace App4
             return availableActivities != null && availableActivities.Count > 0;
         }
 
-        //public void SortCard()
-        //{
-        //    string dbPath = System.IO.Path.Combine(
-        //                    Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
-        //    SQLiteConnection db = new SQLiteConnection(dbPath);
-        //    var table_sorted = db.Query<Stock>("SELECT * FROM Items ORDER BY dateTime ASC");
-
-        //    foreach (var s in table_sorted)
-        //    {
-        //        System.Console.WriteLine("ソート後：" + s.Id + "  " + s.dateTime);
-        //    }
-        //}
-
         protected void Getfromdb()
         {
             string dbPath = System.IO.Path.Combine(
                                 Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).ToString(), "App4no.db");
             SQLiteConnection db = new SQLiteConnection(dbPath);
-            var table_sorted = db.Query<Stock>("SELECT * FROM Items ORDER BY dateTime ASC");
+
+            var table_sorted = plan_main.SortCard(db);
+
+            ListItems.Syokika();
             foreach (var a in table_sorted)
             {
                 ListItems.IdList.Add(a.Id);
@@ -309,8 +296,6 @@ namespace App4
                 ListItems.PlanList.Add(a.Plan);
             }
         }
-
-
     }
 
     public class PhotoViewHolder : RecyclerView.ViewHolder
@@ -357,13 +342,9 @@ namespace App4
             DateList = new List<string>();
             CommentList = new List<string>();
             PlanList = new List<string>();
-            PhotoBitMapList = new List<Bitmap>();}
-
-
-
+            PhotoBitMapList = new List<Bitmap>();
+        }
     }
-
-
 
     //----------------------------------------------------------------------
     // ADAPTER

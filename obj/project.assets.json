@@ -808,11 +808,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\App4-master\\App4.csproj",
+      "projectUniqueName": "C:\\Users\\USER\\Documents\\GitHub\\App4-master\\App4.csproj",
       "projectName": "App4",
-      "projectPath": "C:\\App4-master\\App4.csproj",
+      "projectPath": "C:\\Users\\USER\\Documents\\GitHub\\App4-master\\App4.csproj",
       "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-      "outputPath": "C:\\App4-master\\obj\\",
+      "outputPath": "C:\\Users\\USER\\Documents\\GitHub\\App4-master\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "configFilePaths": [
